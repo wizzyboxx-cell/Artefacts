@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exploring Music in Context: DP Music</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Lato:wght@300;400;700&family=Quicksand:wght@500;600;700&display=swap');
+:root{
+  --bg:#1c100c;
+  --panel:#311e18;
+  --panel-2:#3b231c;
+  --edge:#744337;
+  --text:#faf3ee;
+  --text-soft:#e1c2b7;
+  --coral:#ea6658;
+  --coral-light:#f4a89d;
+  --coral-deep:#3a1512;
+  --cream:#f2d9b8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;background:var(--bg);}
+body{
+  background:
+    radial-gradient(circle at 12% 8%, rgba(234,102,88,0.42), transparent 46%),
+    radial-gradient(circle at 90% 15%, rgba(244,168,157,0.22), transparent 42%),
+    radial-gradient(circle at 82% 95%, rgba(242,217,184,0.20), transparent 46%),
+    radial-gradient(circle at 8% 85%, rgba(234,102,88,0.24), transparent 42%),
+    linear-gradient(165deg, #241512 0%, #2c1712 40%, #1f1210 70%, #180d0a 100%);
+  color:var(--text);
+  font-family:'Lato',sans-serif;
+  font-weight:400;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+  overflow-x:hidden;
+}
+.serif{font-family:'Playfair Display',serif;}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+/* WATERMARK LAYER */
+.world-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.world-bg svg{width:100%;height:100%;opacity:.05;}
+.wrap{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:0 20px 110px;}
+/* HERO */
+.hero{
+  position:relative;overflow:hidden;
+  padding:70px 20px 60px;margin-bottom:10px;
+  display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center;
+}
+@media (max-width:760px){.hero{grid-template-columns:1fr;padding-top:44px;text-align:center;}
+  .hero-globe{order:-1;margin:0 auto;}}
+.hero-text{position:relative;z-index:2;}
+.kicker{font-size:13.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--coral-light);margin-bottom:14px;}
+.hero h1{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(52px,7.4vw,78px);color:#fff;line-height:1.04;letter-spacing:-.01em;}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--coral-light),var(--cream),var(--coral-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{margin-top:16px;color:var(--text-soft);font-size:22px;max-width:48ch;}
+.hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;}
+@media (max-width:760px){.hero-tags{justify-content:center;}}
+.hero-tag{
+  background:rgba(234,102,88,0.18);border:1px solid rgba(244,168,157,0.4);border-radius:999px;
+  padding:7px 15px;font-size:14px;font-weight:700;color:var(--coral-light);
+}
+.hero-globe{position:relative;z-index:1;}
+.hero-globe svg{width:100%;height:auto;display:block;filter:drop-shadow(0 20px 60px rgba(234,102,88,0.35));}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.note-float-1{animation:bob 4.2s ease-in-out infinite;}
+.note-float-2{animation:bob 5.1s ease-in-out infinite .6s;}
+.note-float-3{animation:bob 3.6s ease-in-out infinite 1.1s;}
+/* SECTION HEADERS */
+h2.section-title{
+  font-family:'Playfair Display',serif;font-size:41.5px;font-weight:700;
+  margin:70px 0 8px;letter-spacing:-.005em;color:#fff;
+  display:flex;align-items:center;gap:12px;
+}
+.lede{color:var(--text-soft);max-width:66ch;margin:0 0 24px;font-size:20px;}
+/* ORIENTATION CARD */
+.orient{
+  position:relative;background:linear-gradient(160deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--edge);border-radius:20px;padding:30px 32px;margin-top:20px;
+  box-shadow:0 30px 70px rgba(0,0,0,.35);
+}
+.orient-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;margin-bottom:22px;}
+@media (max-width:640px){.orient-grid{grid-template-columns:1fr;}}
+.orient-box{background:rgba(24,13,10,0.6);border:1px solid var(--edge);border-radius:14px;padding:18px 20px;}
+.orient-box b.label{display:block;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);margin-bottom:12px;}
+.orient-box ul{list-style:none;display:flex;flex-direction:column;gap:9px;font-size:15.5px;}
+.orient-box li{position:relative;}
+.orient-box p{font-size:15.5px;color:var(--text-soft);margin-bottom:7px;}
+.orient-box p:last-child{margin-bottom:0;}
+.orient-box p b{color:var(--text);font-weight:700;}
+.jump-label{font-size:13.5px;color:var(--text-soft);margin-bottom:10px;}
+.jump-links{display:flex;flex-wrap:wrap;gap:9px;}
+.jump-links label{
+  font-family:'Lato',sans-serif;text-decoration:none;display:inline-block;
+  font-size:15.5px;font-weight:700;color:var(--text);
+  background:rgba(24,13,10,0.6);border:2px solid var(--edge);border-radius:999px;padding:10px 18px;
+  cursor:pointer;transition:border-color .15s ease, transform .15s ease, background .15s ease;
+  user-select:none;
+}
+.jump-links label:hover{border-color:var(--coral-light);transform:translateY(-1px);}
+/* PAGE NAVIGATION — radio-driven, zero JS */
+.page-radio{display:none;}
+.page-section{display:none;}
+#jump-what:checked ~ #page-what,
+#jump-roles:checked ~ #page-roles,
+#jump-material:checked ~ #page-material,
+#jump-submit:checked ~ #page-submit,
+#jump-criteria:checked ~ #page-criteria,
+#jump-checklist:checked ~ #page-checklist{display:block;}
+#jump-what:checked ~ .orient .jump-links label[for="jump-what"],
+#jump-roles:checked ~ .orient .jump-links label[for="jump-roles"],
+#jump-material:checked ~ .orient .jump-links label[for="jump-material"],
+#jump-submit:checked ~ .orient .jump-links label[for="jump-submit"],
+#jump-criteria:checked ~ .orient .jump-links label[for="jump-criteria"],
+#jump-checklist:checked ~ .orient .jump-links label[for="jump-checklist"]{
+  border-color:var(--coral-light);background:var(--coral-deep);
+}
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:14px;margin:56px 0 -30px;opacity:.5;}
+.divider .line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--edge),transparent);}
+.divider svg{flex-shrink:0;opacity:.6;}
+/* KEY TERMS */
+.terms-box{margin:28px 0;}
+.terms-box h3{font-family:'Playfair Display',serif;font-size:27px;color:#fff;margin-bottom:16px;}
+.terms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media (max-width:760px){.terms-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:460px){.terms-grid{grid-template-columns:1fr;}}
+.term-card{height:178px;cursor:pointer;position:relative;}
+.term-card input[type="checkbox"]{position:absolute;opacity:0;pointer-events:none;}
+.term-card label.flip-inner{position:relative;display:block;width:100%;height:100%;cursor:pointer;}
+.term-card .face{
+  position:absolute;inset:0;border-radius:16px;padding:18px 20px;
+  border:1px solid var(--edge);
+  transition:opacity .2s ease;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.term-card .face.front{
+  background:linear-gradient(160deg, var(--panel) 0%, var(--panel-2) 100%);
+  opacity:1;z-index:2;
+}
+.term-card .face.back{
+  background:linear-gradient(160deg, var(--panel-2) 0%, var(--panel) 100%);
+  opacity:0;z-index:1;pointer-events:none;
+}
+.term-card input:checked ~ label.flip-inner .face.front{opacity:0;pointer-events:none;z-index:1;}
+.term-card input:checked ~ label.flip-inner .face.back{opacity:1;pointer-events:auto;z-index:2;}
+.term-card .num{
+  display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;
+  background:var(--card);color:#1c100c;font-family:'Quicksand',sans-serif;font-weight:700;font-size:14.5px;
+  margin-bottom:10px;
+}
+.term-card .term{font-family:'Quicksand',sans-serif;font-weight:700;font-size:20px;color:#fff;line-height:1.2;}
+.term-card .face.back .back-label{font-family:'Quicksand',sans-serif;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--card);margin-bottom:8px;font-weight:700;}
+.term-card .face.back p{font-family:'Quicksand',sans-serif;font-weight:500;font-size:15px;color:var(--text);line-height:1.5;}
+.term-card .tap-hint{font-family:'Quicksand',sans-serif;position:absolute;bottom:13px;left:20px;right:20px;font-size:13.5px;color:var(--text-soft);}
+/* ROLES — radio-driven tabs, zero JS */
+.role-tabswrap > input[type="radio"]{display:none;}
+.role-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.role-tab{
+  display:flex;align-items:center;gap:9px;cursor:pointer;
+  border:1.5px solid var(--edge);background:var(--panel);color:var(--text);
+  padding:11px 18px;border-radius:14px;font-weight:700;font-size:15.5px;
+  transition:all .25s cubic-bezier(.34,1.4,.64,1);user-select:none;transform-origin:center;
+}
+.role-tab svg{width:18px;height:18px;flex-shrink:0;stroke:var(--text-soft);}
+#role-researcher:checked ~ .role-tabs label[for="role-researcher"],
+#role-creator:checked ~ .role-tabs label[for="role-creator"],
+#role-performer:checked ~ .role-tabs label[for="role-performer"]{
+  border-color:var(--coral-light);background:linear-gradient(135deg,var(--coral-deep),var(--panel-2));
+  box-shadow:0 0 0 1px var(--coral-light) inset, 0 8px 24px rgba(234,102,88,0.25);
+  transform:scale(1.06);
+}
+#role-researcher:checked ~ .role-tabs label[for="role-researcher"] svg,
+#role-creator:checked ~ .role-tabs label[for="role-creator"] svg,
+#role-performer:checked ~ .role-tabs label[for="role-performer"] svg{stroke:var(--coral-light);}
+.role-panel{
+  display:none;background:linear-gradient(160deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--edge);border-radius:20px;padding:30px 32px;box-shadow:0 30px 70px rgba(0,0,0,.3);
+}
+#role-researcher:checked ~ .role-panels #panel-researcher{display:block;}
+#role-creator:checked ~ .role-panels #panel-creator{display:block;}
+#role-performer:checked ~ .role-panels #panel-performer{display:block;}
+.role-panel h3{font-family:'Playfair Display',serif;font-size:37px;margin-bottom:12px;color:#fff;}
+.role-panel > p{font-size:20.5px;color:var(--text);margin-bottom:18px;max-width:68ch;}
+.role-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media (max-width:620px){.role-cols{grid-template-columns:1fr;}}
+.role-box{background:rgba(24,13,10,0.55);border-radius:12px;padding:16px 18px;border:1px solid var(--edge);}
+.role-box b.label{display:block;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--coral-light);margin-bottom:10px;}
+.role-box ul{list-style:none;font-size:17px;color:var(--text-soft);}
+.role-box li{margin-bottom:7px;}
+.role-photo{
+  width:100%;max-height:230px;object-fit:cover;border-radius:14px;margin-bottom:18px;
+  border:1px solid var(--edge);filter:saturate(0.95) brightness(0.97);display:block;
+}
+.role-photo-cap{font-size:14.5px;color:var(--text-soft);margin:-12px 0 18px;font-style:italic;}
+.role-note{
+  margin-top:18px;background:rgba(242,217,184,0.13);border:1px solid rgba(242,217,184,0.45);
+  border-radius:14px;padding:16px 20px;font-size:15px;color:var(--text);
+}
+.role-note b{color:var(--cream);}
+/* PHOTO ACCENTS */
+.inquiry-card .card-img{width:100%;height:88px;object-fit:cover;border-radius:12px;margin-bottom:10px;display:block;position:relative;filter:saturate(0.92) brightness(0.96);}
+.upload-card .card-img{width:100%;height:92px;object-fit:cover;border-radius:12px;margin-bottom:14px;display:block;position:relative;filter:saturate(0.92) brightness(0.96);}
+.term-card.has-photo{height:240px;}
+.term-card .term-img{width:100%;height:76px;object-fit:cover;border-radius:12px 12px 0 0;margin:-18px -20px 10px;display:block;width:calc(100% + 40px);max-width:none;filter:saturate(0.92) brightness(0.96);}
+.checklist-img{width:100%;max-height:150px;object-fit:cover;border-radius:14px;margin-bottom:18px;display:block;filter:saturate(0.92) brightness(0.96);}
+/* ANALYSIS QUESTIONS */
+.analysis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0;}
+@media (max-width:700px){.analysis-grid{grid-template-columns:1fr;}}
+.analysis-card{background:var(--panel);border:1px solid var(--edge);border-radius:16px;padding:18px 20px;border-top:3px solid var(--coral);}
+.analysis-card h4{font-family:'Playfair Display',serif;font-size:27px;color:var(--coral-light);margin-bottom:8px;}
+.analysis-card p{font-size:15.5px;color:var(--text-soft);}
+/* AREAS OF INQUIRY — checkbox-driven reveal cards, zero JS */
+h3.subsection-title{
+  font-family:'Playfair Display',serif;font-size:27px;font-weight:700;color:#fff;
+  display:flex;align-items:center;gap:10px;margin:0 0 6px;
+}
+.sub-lede{font-size:17px;color:var(--text-soft);margin:0 0 18px;max-width:60ch;}
+.material-group{margin-bottom:40px;}
+.material-group:last-of-type{margin-bottom:0;}
+.inquiry-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+@media (max-width:760px){.inquiry-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:460px){.inquiry-grid{grid-template-columns:1fr;}}
+.inquiry-card{height:400px;cursor:pointer;position:relative;}
+.inquiry-card input[type="checkbox"]{position:absolute;opacity:0;pointer-events:none;}
+.inquiry-card label.flip-inner{
+  position:relative;display:block;width:100%;height:100%;cursor:pointer;
+  transition:transform .32s cubic-bezier(.34,1.4,.64,1);transform-origin:center;
+}
+.inquiry-card input:checked ~ label.flip-inner{transform:scale(1.08);z-index:6;}
+.inquiry-card .face{
+  position:absolute;inset:0;border-radius:16px;
+  padding:20px 18px;overflow:hidden;border:1.5px solid var(--accent, var(--edge));
+  transition:opacity .32s ease, transform .32s ease;
+}
+.inquiry-card .face.front{
+  background:linear-gradient(160deg, var(--panel) 0%, var(--panel-2) 100%);
+  box-shadow:0 0 0 1px rgba(255,255,255,0.03) inset, 0 14px 34px rgba(0,0,0,.35);
+  opacity:1;transform:scale(1);z-index:2;
+}
+.inquiry-card .face.front::before{
+  content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;
+  background:radial-gradient(circle, var(--accent), transparent 70%); opacity:.35;
+}
+.inquiry-card .face.back{
+  background:linear-gradient(160deg, var(--accent-deep, var(--panel-2)) 0%, var(--panel) 100%);
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;transform:scale(.96);z-index:1;pointer-events:none;
+}
+.inquiry-card input:checked ~ label.flip-inner .face.front{opacity:0;transform:scale(1.04);pointer-events:none;z-index:1;}
+.inquiry-card input:checked ~ label.flip-inner .face.back{opacity:1;transform:scale(1);pointer-events:auto;z-index:2;}
+.inquiry-card .num{font-family:'Playfair Display',serif;font-size:42.5px;font-weight:900;color:var(--accent);position:relative;}
+.inquiry-card h4{font-size:17px;margin:9px 0 9px;line-height:1.35;color:#fff;position:relative;}
+.inquiry-card .face.front p{font-size:14px;color:var(--text-soft);position:relative;}
+.inquiry-card .face.back p{font-size:14px;color:var(--text);line-height:1.55;}
+.inquiry-card .tap-hint{
+  position:absolute;bottom:14px;left:18px;right:18px;font-size:15.5px;
+  font-family:'Lato',sans-serif;color:var(--accent);font-weight:400;
+}
+.inquiry-card .back-label{
+  font-size:18px;font-family:'Playfair Display',serif;color:var(--accent);font-weight:700;margin-bottom:8px;
+}
+.context-row{display:flex;gap:14px;flex-wrap:wrap;}
+.context-pill{height:190px;cursor:pointer;flex:1;min-width:220px;position:relative;}
+.context-pill input[type="checkbox"]{position:absolute;opacity:0;pointer-events:none;}
+.context-pill label.flip-inner{
+  position:relative;display:block;width:100%;height:100%;cursor:pointer;
+  transition:transform .32s cubic-bezier(.34,1.4,.64,1);transform-origin:center;
+}
+.context-pill input:checked ~ label.flip-inner{transform:scale(1.06);z-index:6;}
+.context-pill .face{
+  position:absolute;inset:0;border-radius:16px;padding:18px 20px;
+  border:1.5px solid var(--accent, var(--edge));
+  transition:opacity .32s ease, transform .32s ease;
+}
+.context-pill .face.front{
+  background:var(--panel-2);display:flex;flex-direction:column;justify-content:center;
+  opacity:1;transform:scale(1);z-index:2;
+}
+.context-pill .face.back{
+  background:linear-gradient(160deg, var(--accent-deep, var(--panel-2)) 0%, var(--panel) 100%);
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;transform:scale(.96);z-index:1;pointer-events:none;
+}
+.context-pill input:checked ~ label.flip-inner .face.front{opacity:0;transform:scale(1.04);pointer-events:none;z-index:1;}
+.context-pill input:checked ~ label.flip-inner .face.back{opacity:1;transform:scale(1);pointer-events:auto;z-index:2;}
+.context-pill b{display:block;color:#fff;font-size:26px;margin-bottom:6px;font-family:'Playfair Display',serif;}
+.context-pill .face.front p{font-size:14.5px;color:var(--text-soft);}
+.context-pill .face.back p{font-size:14px;color:var(--text);line-height:1.55;}
+.context-pill .tap-hint{
+  font-size:15.5px;font-family:'Lato',sans-serif;color:var(--accent);font-weight:400;margin-top:10px;
+}
+.context-pill .back-label{
+  font-size:18px;font-family:'Playfair Display',serif;color:var(--accent);font-weight:700;margin-bottom:8px;
+}
+.ewm-note{
+  margin-top:18px;background:rgba(242,217,184,0.13);border:1px solid rgba(242,217,184,0.45);
+  border-radius:14px;padding:16px 20px;font-size:15px;color:var(--text);
+}
+.ewm-note b{color:var(--cream);}
+/* UPLOADS */
+.upload-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+@media (max-width:900px){.upload-grid{grid-template-columns:1fr;}}
+.upload-card{
+  position:relative;background:linear-gradient(160deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--edge);border-radius:20px;padding:22px 22px;overflow:hidden;
+}
+.upload-card::after{
+  content:'';position:absolute;bottom:-40px;left:-40px;width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(234,102,88,0.25),transparent 70%);
+}
+.upload-card .up-tag{
+  position:relative;display:inline-block;font-size:12.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--coral);color:#fff;padding:5px 14px;border-radius:999px;margin-bottom:14px;
+}
+.upload-card.audio .up-tag{background:var(--cream);color:#3a2a0e;}
+.upload-card.ref .up-tag{background:var(--coral-light);color:#3a1512;}
+.upload-card h4{font-family:'Playfair Display',serif;font-size:27px;margin-bottom:4px;color:#fff;position:relative;}
+.upload-card .limit{font-size:14.5px;color:var(--coral-light);font-weight:700;margin-bottom:16px;position:relative;}
+.pkg-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:8px;position:relative;}
+.pkg-list li{
+  display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:var(--text-soft);
+  background:rgba(24,13,10,0.55);border-radius:10px;padding:9px 12px;
+}
+.pkg-list .n{
+  flex-shrink:0;width:20px;height:20px;border-radius:50%;background:var(--panel-2);
+  display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;color:var(--text);
+}
+.pkg-list li span.main{color:#fff;font-weight:600;}
+.not-counted{font-size:13px;color:var(--text-soft);margin-top:12px;font-style:italic;position:relative;}
+/* CRITERIA */
+.crit-tabswrap > input[type="radio"]{display:none;}
+.crit-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.crit-tab{
+  cursor:pointer;border:1.5px solid var(--edge);background:var(--panel);color:var(--text);
+  padding:11px 18px;border-radius:14px;font-weight:800;font-size:15.5px;display:flex;align-items:center;gap:9px;
+  transition:all .25s cubic-bezier(.34,1.4,.64,1);user-select:none;transform-origin:center;
+}
+.crit-tab .pill{background:var(--panel-2);border-radius:999px;padding:3px 9px;font-size:12.5px;color:var(--text-soft);}
+#crit-tab-a:checked ~ .crit-tabs label[for="crit-tab-a"],
+#crit-tab-b1:checked ~ .crit-tabs label[for="crit-tab-b1"],
+#crit-tab-b2:checked ~ .crit-tabs label[for="crit-tab-b2"],
+#crit-tab-c1:checked ~ .crit-tabs label[for="crit-tab-c1"],
+#crit-tab-c2:checked ~ .crit-tabs label[for="crit-tab-c2"]{
+  border-color:var(--cream);background:linear-gradient(135deg,var(--coral-deep),var(--panel-2));
+  box-shadow:0 0 0 1px var(--cream) inset;
+  transform:scale(1.06);
+}
+.crit-panel{
+  display:none;background:linear-gradient(160deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--edge);border-radius:20px;padding:30px 32px;box-shadow:0 30px 70px rgba(0,0,0,.3);
+}
+#crit-tab-a:checked ~ .crit-panels #crit-a{display:block;}
+#crit-tab-b1:checked ~ .crit-panels #crit-b1{display:block;}
+#crit-tab-b2:checked ~ .crit-panels #crit-b2{display:block;}
+#crit-tab-c1:checked ~ .crit-panels #crit-c1{display:block;}
+#crit-tab-c2:checked ~ .crit-panels #crit-c2{display:block;}
+.crit-panel h3{font-family:'Playfair Display',serif;font-size:33.5px;margin-bottom:6px;color:#fff;}
+.crit-marks{font-size:14.5px;color:var(--cream);font-weight:700;margin-bottom:16px;}
+.crit-panel p.focus{font-size:19.5px;color:var(--text);margin-bottom:18px;max-width:68ch;}
+.crit-panel .guiding{
+  font-size:14.5px;color:var(--text-soft);background:rgba(24,13,10,0.55);border-left:3px solid var(--coral-light);
+  padding:12px 16px;border-radius:8px;margin-bottom:20px;font-style:italic;
+}
+.spectrum{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.spectrum.cols-2{grid-template-columns:repeat(2,1fr);}
+.spectrum.cols-3{grid-template-columns:repeat(3,1fr);}
+@media (max-width:680px){.spectrum{grid-template-columns:1fr 1fr;}}
+.spec-step{
+  background:rgba(24,13,10,0.55);border-radius:12px;padding:14px 16px;border-top:3px solid var(--edge);
+  transition:transform .15s ease;
+}
+.spec-step:hover{transform:translateY(-3px);}
+.spec-step .range{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--text-soft);margin-bottom:5px;}
+.spec-step .verb{font-family:'Playfair Display',serif;font-weight:700;font-size:22.5px;margin-bottom:7px;}
+.spec-step p{font-size:13.5px;color:var(--text-soft);}
+.spec-step:nth-child(1){border-top-color:#8a4a3f;}
+.spec-step:nth-child(2){border-top-color:var(--cream);}
+.spec-step:nth-child(3){border-top-color:var(--coral);}
+.spec-step:nth-child(4){border-top-color:#e8926b;}
+.spec-step:nth-child(1) .verb{color:#d99a8f;}
+.spec-step:nth-child(2) .verb{color:var(--cream);}
+.spec-step:nth-child(3) .verb{color:var(--coral-light);}
+.spec-step:nth-child(4) .verb{color:#f0b087;}
+/* CHECKLIST */
+.checklist{
+  background:linear-gradient(160deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--edge);border-radius:20px;padding:28px 30px;
+}
+.checklist ul{list-style:none;display:flex;flex-direction:column;gap:11px;}
+.checklist li{
+  font-size:19.5px;background:rgba(24,13,10,0.5);
+  border-radius:12px;padding:13px 16px;
+}
+footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--edge);font-size:13.5px;color:var(--text-soft);}
+footer a{color:var(--coral-light);}
+</style>
+</head>
+<body>
+<div class="world-bg">
+  <svg viewBox="0 0 1000 1400" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="white" fill="none" stroke-width="1.5">
+      <circle cx="150" cy="200" r="90"/><ellipse cx="150" cy="200" rx="90" ry="30"/><ellipse cx="150" cy="200" rx="30" ry="90"/>
+      <circle cx="850" cy="500" r="120"/><ellipse cx="850" cy="500" rx="120" ry="40"/><ellipse cx="850" cy="500" rx="40" ry="120"/>
+      <circle cx="200" cy="900" r="100"/><ellipse cx="200" cy="900" rx="100" ry="33"/><ellipse cx="200" cy="900" rx="33" ry="100"/>
+      <circle cx="800" cy="1200" r="80"/><ellipse cx="800" cy="1200" rx="80" ry="26"/><ellipse cx="800" cy="1200" rx="26" ry="80"/>
+    </g>
+  </svg>
+</div>
+<div class="wrap">
+  <input type="radio" name="pagejump" id="jump-what" class="page-radio" checked>
+  <input type="radio" name="pagejump" id="jump-roles" class="page-radio">
+  <input type="radio" name="pagejump" id="jump-material" class="page-radio">
+  <input type="radio" name="pagejump" id="jump-submit" class="page-radio">
+  <input type="radio" name="pagejump" id="jump-criteria" class="page-radio">
+  <input type="radio" name="pagejump" id="jump-checklist" class="page-radio">
+  <div class="hero">
+    <div class="hero-text">
+      <div class="kicker">DP Music, HL/SL, External Assessment</div>
+      <h1>Exploring Music <em>in Context</em></h1>
+      <p class="hero-sub">The academic side of the portfolio: go wide, be diverse, and show you understand a style before you touch it.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">30% SL</span>
+        <span class="hero-tag">20% HL</span>
+        <span class="hero-tag">External assessment</span>
+        <span class="hero-tag">24 marks total</span>
+      </div>
+    </div>
+    <div class="hero-globe">
+      <div style="background:radial-gradient(circle at 50% 40%, rgba(244,168,157,0.35), transparent 65%);border-radius:28px;padding:14px;display:flex;align-items:center;justify-content:center;">
+        <img src="images/emc-01.webp" alt="A hand writing notation in a manuscript book next to a piano keyboard" style="width:100%;max-width:320px;border-radius:18px;display:block;box-shadow:0 20px 50px rgba(0,0,0,.35);">
+      </div>
+    </div>
+  </div>
+  <div class="orient">
+    <div class="orient-grid">
+      <div class="orient-box">
+        <b class="label">By the end of this page you can</b>
+        <ul>
+          <li>Explain what "exploring" asks of you, and how it differs from experimenting</li>
+          <li>Use the when/where, what, how/why framework for musical analysis</li>
+          <li>Say exactly what goes in each of the three uploads</li>
+          <li>Self assess draft work against criteria A, B1, B2, C1, and C2</li>
+        </ul>
+      </div>
+      <div class="orient-box">
+        <b class="label">Where this fits</b>
+        <p><b>Leads into:</b> Experimenting with Music</p>
+        <p><b>Runs alongside:</b> Presenting Music</p>
+        <p><b>Assessed:</b> Externally, IB examined</p>
+      </div>
+    </div>
+    <p class="jump-label">Jump to:</p>
+    <div class="jump-links">
+      <label for="jump-what">1. What is exploring</label>
+      <label for="jump-roles">2. The three roles</label>
+      <label for="jump-material">3. Choosing your material</label>
+      <label for="jump-submit">4. What you submit</label>
+      <label for="jump-criteria">5. How it's marked</label>
+      <label for="jump-checklist">6. Before you submit</label>
+    </div>
+  </div>
+  <div class="page-section" id="page-what">
+  <div class="divider">
+    <div class="line"></div>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#ea6658"><path d="M12 2l2.1 7.9L22 12l-7.9 2.1L12 22l-2.1-7.9L2 12l7.9-2.1z"/></svg>
+    <div class="line"></div>
+  </div>
+  <h2 class="section-title" id="sec-what">What is exploring, really?</h2>
+  <p class="lede">
+    Exploring is aural, kinaesthetic, and scholarly research. You listen critically, read scores, and investigate how music is made and performed in contexts you didn't grow up with, then show what you found through short, honest practical exercises, not polished performances.
+  </p>
+  <p class="lede">
+    Where experimenting is about pushing an idea through cycles of trial and revision, exploring is about breadth and understanding: naming what you hear accurately, locating it precisely in a score or recording, and explaining why it matters. It's the academic half of your portfolio, the scholar's role, done well.
+  </p>
+  <div class="terms-box">
+    <h3>Key terms to know</h3>
+    <div class="terms-grid">
+      <div class="term-card has-photo" style="--card:#f2c94c">
+        <input type="checkbox" id="term-1">
+        <label class="flip-inner" for="term-1">
+          <div class="face front">
+            <img fetchpriority="high" class="term-img" src="images/emc-02.webp" alt="A diverse group of laughing people each holding a different musical instrument or item">
+            <span class="num">1</span>
+            <span class="term">DIVERSITY &amp; BREADTH</span>
+            <div class="tap-hint">Tap for more &#8635;</div>
+          </div>
+          <div class="face back"><div class="back-label">Meaning</div><p>Contrasting material from personal, local, and global contexts, across at least two areas of inquiry.</p></div>
+        </label>
+      </div>
+      <div class="term-card has-photo" style="--card:#2dd4bf">
+        <input type="checkbox" id="term-2">
+        <label class="flip-inner" for="term-2">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="term-img" src="images/emc-03.webp" alt="Balanced stones stacked on a beach">
+            <span class="num">2</span>
+            <span class="term">BALANCE</span>
+            <div class="tap-hint">Tap for more &#8635;</div>
+          </div>
+          <div class="face back"><div class="back-label">Meaning</div><p>Equal treatment of the areas of inquiry and contexts you study, not three examples from one and a token nod to another.</p></div>
+        </label>
+      </div>
+      <div class="term-card has-photo" style="--card:#5b8def">
+        <input type="checkbox" id="term-3">
+        <label class="flip-inner" for="term-3">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="term-img" src="images/emc-04.webp" alt="Rolled up sheets of handwritten music manuscript">
+            <span class="num">3</span>
+            <span class="term">MUSICAL FINDINGS</span>
+            <div class="tap-hint">Tap for more &#8635;</div>
+          </div>
+          <div class="face back"><div class="back-label">Meaning</div><p>What, how, and why music is made, drawn from scores, recordings, and live experience.</p></div>
+        </label>
+      </div>
+      <div class="term-card has-photo" style="--card:#a78bfa">
+        <input type="checkbox" id="term-4">
+        <label class="flip-inner" for="term-4">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="term-img" src="images/emc-05.webp" alt="An orchestra performing a live film score under a screen showing a movie">
+            <span class="num">4</span>
+            <span class="term">EXTRA MUSICAL FINDINGS</span>
+            <div class="tap-hint">Tap for more &#8635;</div>
+          </div>
+          <div class="face back"><div class="back-label">Meaning</div><p>When and where music was made: the social, cultural, and political context around it.</p></div>
+        </label>
+      </div>
+      <div class="term-card has-photo" style="--card:#ea6658">
+        <input type="checkbox" id="term-5">
+        <label class="flip-inner" for="term-5">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="term-img" src="images/emc-06.webp" alt="A conductor leading an orchestra in front of a screen showing a film">
+            <span class="num">5</span>
+            <span class="term">IMPLICATIONS</span>
+            <div class="tap-hint">Tap for more &#8635;</div>
+          </div>
+          <div class="face back"><div class="back-label">Meaning</div><p>Explaining how your findings actually shaped your creating exercise and performed adaptation.</p></div>
+        </label>
+      </div>
+      <div class="term-card has-photo" style="--card:#4ade80">
+        <input type="checkbox" id="term-6">
+        <label class="flip-inner" for="term-6">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="term-img" src="images/emc-07.webp" alt="Students drumming on plastic buckets with drumsticks">
+            <span class="num">6</span>
+            <span class="term">ADAPTING</span>
+            <div class="tap-hint">Tap for more &#8635;</div>
+          </div>
+          <div class="face back"><div class="back-label">Meaning</div><p>Taking music from another instrument or voice and reworking it for your own primary instrument or voice.</p></div>
+        </label>
+      </div>
+      <div class="term-card has-photo" style="--card:#fb923c">
+        <input type="checkbox" id="term-7">
+        <label class="flip-inner" for="term-7">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="term-img" src="images/emc-08.webp" alt="A fountain pen writing notation on staff paper">
+            <span class="num">7</span>
+            <span class="term">EXPLORING</span>
+            <div class="tap-hint">Tap for more &#8635;</div>
+          </div>
+          <div class="face back"><div class="back-label">Meaning</div><p>The primary focus of this project is research and exploring, more so than creating or performing for their own sake.</p></div>
+        </label>
+      </div>
+      <div class="term-card has-photo" style="--card:#f472b6">
+        <input type="checkbox" id="term-8">
+        <label class="flip-inner" for="term-8">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="term-img" src="images/emc-09.webp" alt="A drum and piano rhythm notated on a music staff">
+            <span class="num">8</span>
+            <span class="term">STIMULUS</span>
+            <div class="tap-hint">Tap for more &#8635;</div>
+          </div>
+          <div class="face back"><div class="back-label">Meaning</div><p>Using specific aspects of your source audio to actively drive and shape your own work, not just sit alongside it.</p></div>
+        </label>
+      </div>
+      <div class="term-card has-photo" style="--card:#38bdf8">
+        <input type="checkbox" id="term-9">
+        <label class="flip-inner" for="term-9">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="term-img" src="images/emc-10.webp" alt="An open notebook with handwritten notes">
+            <span class="num">9</span>
+            <span class="term">JUSTIFICATION</span>
+            <div class="tap-hint">Tap for more &#8635;</div>
+          </div>
+          <div class="face back"><div class="back-label">Meaning</div><p>Of your choice of material. This applies to ALL source material, across every role.</p></div>
+        </label>
+      </div>
+      <div class="term-card has-photo" style="--card:#f87171">
+        <input type="checkbox" id="term-10">
+        <label class="flip-inner" for="term-10">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="term-img" src="images/emc-11.webp" alt="A digital audio workstation screen showing looped tracks">
+            <span class="num">10</span>
+            <span class="term">LOOPS</span>
+            <div class="tap-hint">Tap for more &#8635;</div>
+          </div>
+          <div class="face back"><div class="back-label">Meaning</div><p>Allowed in your creating exercise and performed adaptation, but only if you invented them yourself: your own recording, performance, improvisation, or your own MIDI entry. No pre-existing or commercial loops in their original form.</p></div>
+        </label>
+      </div>
+    </div>
+  </div>
+  <p class="lede">Musical analysis in this component runs on three questions:</p>
+  <div class="analysis-grid">
+    <div class="analysis-card">
+      <h4>When and where?</h4>
+      <p>The contextual background: era, culture, the world the piece came from.</p>
+    </div>
+    <div class="analysis-card">
+      <h4>What?</h4>
+      <p>Deconstructing the music itself: structure, instruments, elements, compositional devices.</p>
+    </div>
+    <div class="analysis-card">
+      <h4>How and why?</h4>
+      <p>The musical choices and the intentions behind them: what was this trying to achieve?</p>
+    </div>
+  </div>
+  </div>
+  <div class="page-section" id="page-roles">
+  <h2 class="section-title" id="sec-roles">The three roles</h2>
+  <p class="lede">All three roles are present, but the balance leans toward researcher. Tap a role to see what it looks like in practice.</p>
+  <div class="role-tabswrap">
+    <input type="radio" name="roletab" id="role-researcher" checked>
+    <input type="radio" name="roletab" id="role-creator">
+    <input type="radio" name="roletab" id="role-performer">
+    <div class="role-tabs">
+      <label for="role-researcher" class="role-tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        Researcher
+      </label>
+      <label for="role-creator" class="role-tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Creator
+      </label>
+      <label for="role-performer" class="role-tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a4 4 0 0 0-4 4v6a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M9 22h6"/></svg>
+        Performer
+      </label>
+    </div>
+    <div class="role-panels">
+      <div class="role-panel" id="panel-researcher">
+        <img loading="lazy" decoding="async" class="role-photo" src="images/emc-12.webp" alt="A musician pointing a pencil at a printed score while holding a guitar" style="height:180px;">
+        <p class="role-photo-cap">Locating findings precisely: bars, beats, and instruments in the score, minutes and seconds in the recording.</p>
+        <h3>Researcher</h3>
+        <p>You investigate the origins and conventions of music you didn't grow up with, then analyse it closely enough to explain how it's built and why.</p>
+        <div class="role-cols">
+          <div class="role-box">
+            <b class="label">What you're doing</b>
+            <ul>
+              <li>Analysing scores and recordings to extract musical findings</li>
+              <li>Researching the social, cultural, and political context around the music</li>
+              <li>Naming what you find with accurate terminology, precisely located</li>
+            </ul>
+          </div>
+          <div class="role-box">
+            <b class="label">Where it shows up</b>
+            <ul>
+              <li>The written exploration in your portfolio</li>
+              <li>Explanations of musical and extra musical findings</li>
+              <li>Criteria A, B1, and B2</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="role-panel" id="panel-creator">
+        <img loading="lazy" decoding="async" class="role-photo" src="images/emc-13.webp" alt="A musician composing at a home studio desk with a keyboard, guitar, and laptop" style="height:180px;">
+        <p class="role-photo-cap">Sketching and building your creative work with whatever tools suit the style: a DAW, a loop pedal, a MIDI keyboard, or manuscript paper.</p>
+        <h3>Creator</h3>
+        <p>You engage with creating conventions practically: arranging, improvising, or notating according to the specific style you're studying. These are technical sketches, not finished works.</p>
+        <div class="role-cols">
+          <div class="role-box">
+            <b class="label">What you're doing</b>
+            <ul>
+              <li>Demonstrating understanding of a style's creating conventions</li>
+              <li>Notating in whichever form suits the style; staff notation isn't required</li>
+              <li>Keeping the exercise small: sketches, not polished compositions</li>
+            </ul>
+          </div>
+          <div class="role-box">
+            <b class="label">Where it shows up</b>
+            <ul>
+              <li>One creating exercise (max 32 bars / 1 minute of audio)</li>
+              <li>The written statement explaining what it demonstrates</li>
+              <li>Criteria B2 and C1</li>
+            </ul>
+          </div>
+        </div>
+        <div class="role-note">
+          <b>Using loops as the creator:</b> loop pedals and loop-based creating are legitimate technique here, but every loop in your creating exercise must be one you invented yourself, from your own recording, performance, improvisation, or your own MIDI entry. Pre-existing or commercial loops used in their original form aren't acceptable.
+        </div>
+      </div>
+      <div class="role-panel" id="panel-performer">
+        <img loading="lazy" decoding="async" class="role-photo" style="object-position:50% 15%;" src="images/emc-14.webp" alt="A violinist performing on stage" style="height:180px;">
+        <p class="role-photo-cap">Adapting music from a local or global context onto your own instrument: this is exploration, not authentic reproduction.</p>
+        <h3>Performer</h3>
+        <p>You adapt and play music from an unfamiliar context on your own instrument, voice, or medium, not to reproduce it perfectly, but to genuinely understand its performing conventions from the inside.</p>
+        <div class="role-cols">
+          <div class="role-box">
+            <b class="label">What you're doing</b>
+            <ul>
+              <li>Adapting stimulus music from a local or global context</li>
+              <li>Playing it on your own instrument, voice, or medium</li>
+              <li>Reflecting on what the adaptation revealed and where it was difficult</li>
+            </ul>
+          </div>
+          <div class="role-box">
+            <b class="label">Where it shows up</b>
+            <ul>
+              <li>One performed adaptation (max 2 minutes)</li>
+              <li>The written statement explaining what it demonstrates</li>
+              <li>Criteria B2 and C2</li>
+            </ul>
+          </div>
+        </div>
+        <div class="role-note">
+          <b>Using loops as the performer:</b> the TSM explicitly names loop pedals as valid performance technique here, including improvisation built on a loop created on the spot. Everything looped must still be you: if you're building layers live, keep the camera on your hands and feet throughout so it's clear you performed every loop yourself.
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="page-section" id="page-material">
+  <div class="divider">
+    <div class="line"></div>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ea6658" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18"/></svg>
+    <div class="line"></div>
+  </div>
+  <h2 class="section-title" id="sec-material">Choosing your material</h2>
+  <p class="lede">Same four areas of inquiry and three contexts as the rest of the course. What's different here is how many you need to touch, and how evenly.</p>
+  <div class="material-group">
+    <h3 class="subsection-title">Areas of inquiry</h3>
+    <p class="sub-lede">Four lenses for how music functions in the world. Your submission draws on at least two of these.</p>
+    <div class="inquiry-grid">
+      <div class="inquiry-card" style="--accent:#f0806f; --accent-deep:#3a2018;">
+        <input type="checkbox" id="inquiry-1">
+        <label class="flip-inner" for="inquiry-1">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="card-img" src="images/emc-15.webp" alt="A hand writing chord symbols by hand on manuscript paper">
+            <div class="num">1</div>
+            <h4>Sociocultural &amp; political expression</h4>
+            <p>Music that carries a social or political message, or preserves a tradition: protest songs, liturgical music, anthems.</p>
+            <div class="tap-hint">Tap for more ↻</div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>Think about the music's intention and purpose, the techniques used to build it, the conventions it follows, and how an audience actually experiences it. Beyond protest songs and anthems, this space also covers work songs, liturgical chant, and songs of resistance from any tradition.</p>
+          </div>
+        </label>
+      </div>
+      <div class="inquiry-card" style="--accent:#e8926b; --accent-deep:#3a2814;">
+        <input type="checkbox" id="inquiry-2">
+        <label class="flip-inner" for="inquiry-2">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="card-img" src="images/emc-16.webp" alt="A saxophonist performing on stage with a band">
+            <div class="num">2</div>
+            <h4>Listening &amp; performance</h4>
+            <p>Music valued mainly for its own aesthetic qualities: chamber music, cool jazz, experimental works.</p>
+            <div class="tap-hint">Tap for more ↻</div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>Sometimes called "absolute music", valued for its own sake rather than any outside purpose. Beyond chamber music and cool jazz, think concert études, minimalist works, or any piece written primarily to be listened to rather than to serve a function.</p>
+          </div>
+        </label>
+      </div>
+      <div class="inquiry-card" style="--accent:#f2d9b8; --accent-deep:#3a3016;">
+        <input type="checkbox" id="inquiry-3">
+        <label class="flip-inner" for="inquiry-3">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="card-img" src="images/emc-17.webp" alt="An orchestra performing a live film score under a screen showing a movie">
+            <div class="num">3</div>
+            <h4>Dramatic impact, movement &amp; entertainment</h4>
+            <p>Music built to serve something else: film scores, ballet, musical theatre.</p>
+            <div class="tap-hint">Tap for more ↻</div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>This music supports something outside itself: movement, drama, or mood. Beyond film and ballet, think incidental theatre music, video game scores, or anything written specifically to entertain in the moment rather than stand alone.</p>
+          </div>
+        </label>
+      </div>
+      <div class="inquiry-card" style="--accent:#c9584a; --accent-deep:#3a1814;">
+        <input type="checkbox" id="inquiry-4">
+        <label class="flip-inner" for="inquiry-4">
+          <div class="face front">
+            <img loading="lazy" decoding="async" class="card-img" src="images/emc-18.webp" alt="A hand adjusting a knob on an audio mixing board">
+            <div class="num">4</div>
+            <h4>Technology in the electronic &amp; digital age</h4>
+            <p>Music made, performed, or produced through electronic or digital means: EDM, elektronische Musik, studio production.</p>
+            <div class="tap-hint">Tap for more ↻</div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>Technology here doesn't just distribute the music: it shapes how it's made. Beyond EDM and elektronische Musik, consider looping, sampling, DAW based production, or any piece where the studio itself functions as an instrument.</p>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="material-group">
+    <h3 class="subsection-title">Contexts of music</h3>
+    <p class="sub-lede">Three lenses for how familiar the material already is to you.</p>
+    <div class="context-row">
+      <div class="context-pill" style="--accent:#f2d9b8; --accent-deep:#3a3016;">
+        <input type="checkbox" id="context-personal">
+        <label class="flip-inner" for="context-personal">
+          <div class="face front">
+            <b>Personal</b>
+            <p>Music that's already part of your identity and taste.</p>
+            <div class="tap-hint">Tap for more ↻</div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>Your immediate cultural context and personal interests: the music that has genuinely shaped who you are as a listener and musician, contributing to your emerging musical identity.</p>
+          </div>
+        </label>
+      </div>
+      <div class="context-pill" style="--accent:#ea6658; --accent-deep:#3a1512;">
+        <input type="checkbox" id="context-local">
+        <label class="flip-inner" for="context-local">
+          <div class="face front">
+            <b>Local</b>
+            <p>Music with significance nearby, but not necessarily familiar to you yet.</p>
+            <div class="tap-hint">Tap for more ↻</div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>From your school, town, region, or cultural community: music that surrounds you but that you haven't necessarily explored in depth before now.</p>
+          </div>
+        </label>
+      </div>
+      <div class="context-pill" style="--accent:#f4a89d; --accent-deep:#3a2018;">
+        <input type="checkbox" id="context-global">
+        <label class="flip-inner" for="context-global">
+          <div class="face front">
+            <b>Global</b>
+            <p>Music from places, cultures, or traditions you haven't engaged with before.</p>
+            <div class="tap-hint">Tap for more ↻</div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>This can come from a distant part of the world, or just as validly from a culture close by that you've never had real access to. What matters is genuine unfamiliarity, not geographic distance.</p>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="ewm-note">
+    <b>For this component specifically:</b> your creating exercise and performed adaptation must come from two different areas of inquiry. Balance matters as much as diversity: equal treatment across the areas and contexts you choose scores better than three examples from one area and a token gesture toward another.
+  </div>
+  <div class="ewm-note">
+    <b>Across your whole portfolio:</b> aim for four different areas of inquiry in your creating work (split between this component and Experimenting with Music), and four different areas in your performing work. Don't reuse the same area for the same role twice.
+  </div>
+  <div class="ewm-note">
+    <b>If you're drawn to Area of Inquiry 4 (Technology):</b> loops are a completely legitimate way into this area, and the TSM specifically frames them as creative tools, useful for sketching ideas, layering textures, and building structure, and for transforming sound through chopping, stretching, reversing, and effects. The one non-negotiable: every loop must be one you invented, not a pre-existing or commercial loop used in its original form.
+  </div>
+  </div>
+  <div class="page-section" id="page-submit">
+  <h2 class="section-title" id="sec-submit">What you submit</h2>
+  <p class="lede">Three uploads this time, each with a fixed internal order.</p>
+  <div class="upload-grid">
+    <div class="upload-card">
+      <img loading="lazy" decoding="async" class="card-img" src="images/emc-19.webp" alt="An open notebook with handwritten notes">
+      <span class="up-tag">Upload 1</span>
+      <h4>Written work</h4>
+      <div class="limit">Max 2,400 words</div>
+      <ul class="pkg-list">
+        <li><span class="n">1</span><span><span class="main">Exploration</span> of diverse musical material</span></li>
+        <li><span class="n">2</span><span><span class="main">Creating statement</span>: implications on the exercise</span></li>
+        <li><span class="n">3</span><span><span class="main">Performing statement</span>: implications on the adaptation</span></li>
+        <li><span class="n">4</span><span><span class="main">Bibliography</span>: not included in the word count</span></li>
+      </ul>
+      <p class="not-counted">Also excluded: images/diagrams/scores (max 5 pages), track lists, and citations.</p>
+    </div>
+    <div class="upload-card audio">
+      <img loading="lazy" decoding="async" class="card-img" src="images/emc-20.webp" alt="An audio waveform displayed on a screen">
+      <span class="up-tag">Upload 2</span>
+      <h4>Audio evidence</h4>
+      <div class="limit">Max 4 minutes total</div>
+      <ul class="pkg-list">
+        <li><span class="n">1</span><span><span class="main">Creating exercise</span>: max 1 minute</span></li>
+        <li><span class="n">2</span><span><span class="main">Stimulus</span> for the performed adaptation: max 1 minute</span></li>
+        <li><span class="n">3</span><span><span class="main">Performed adaptation</span>: max 2 minutes</span></li>
+      </ul>
+      <p class="not-counted">One single audio file, compiled in that exact order.</p>
+    </div>
+    <div class="upload-card ref">
+      <img loading="lazy" decoding="async" class="card-img" src="images/emc-21.webp" alt="A microphone icon with a colourful audio waveform">
+      <span class="up-tag">Upload 3</span>
+      <h4>Audio reference material</h4>
+      <div class="limit">Max 3 minutes total</div>
+      <ul class="pkg-list">
+        <li><span class="n">1</span><span><span class="main">Excerpts</span> of the music you analysed and discussed</span></li>
+      </ul>
+      <p class="not-counted">Order matches the order pieces are discussed in your written exploration. Trim longer works to only the sections you actually address.</p>
+    </div>
+  </div>
+  </div>
+  <div class="page-section" id="page-criteria">
+  <div class="divider">
+    <div class="line"></div>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#f2d9b8"><path d="M12 2l2.1 7.9L22 12l-7.9 2.1L12 22l-2.1-7.9L2 12l7.9-2.1z"/></svg>
+    <div class="line"></div>
+  </div>
+  <h2 class="section-title" id="sec-criteria">How it's marked</h2>
+  <p class="lede">Five criteria, 24 marks total. Same criteria at SL and HL. Tap a criterion to see the mark bands.</p>
+  <div class="crit-tabswrap">
+    <input type="radio" name="crittab" id="crit-tab-a" checked>
+    <input type="radio" name="crittab" id="crit-tab-b1">
+    <input type="radio" name="crittab" id="crit-tab-b2">
+    <input type="radio" name="crittab" id="crit-tab-c1">
+    <input type="radio" name="crittab" id="crit-tab-c2">
+    <div class="crit-tabs">
+      <label for="crit-tab-a" class="crit-tab" title="Selection of evidence">A <span class="pill">6</span></label>
+      <label for="crit-tab-b1" class="crit-tab" title="Conducting musical research">B1 <span class="pill">9</span></label>
+      <label for="crit-tab-b2" class="crit-tab" title="Implications">B2 <span class="pill">3</span></label>
+      <label for="crit-tab-c1" class="crit-tab" title="Understanding creating conventions">C1 <span class="pill">3</span></label>
+      <label for="crit-tab-c2" class="crit-tab" title="Understanding performing practices">C2 <span class="pill">3</span></label>
+    </div>
+    <div class="crit-panels">
+      <div class="crit-panel" id="crit-a">
+        <h3>Criterion A: Selection of evidence</h3>
+        <div class="crit-marks">6 marks</div>
+        <p class="focus">Judges the diversity, breadth, and balance of what you chose to put in the portfolio, not just whether it's varied, but whether the areas of inquiry and contexts are treated equally.</p>
+        <p class="guiding">Ask yourself: is my evidence genuinely diverse, or does it lean heavily on one area while barely touching another?</p>
+        <div class="spectrum cols-3">
+          <div class="spec-step"><div class="range">1 to 2</div><div class="verb">Ineffective</div><p>Doesn't refer to diverse material; evidence is rudimentary.</p></div>
+          <div class="spec-step"><div class="range">3 to 4</div><div class="verb">Suitable</div><p>Refers to diverse material, but the balance is inconsistent.</p></div>
+          <div class="spec-step"><div class="range">5 to 6</div><div class="verb">Purposeful</div><p>Diverse material, relevant evidence, purposefully balanced.</p></div>
+        </div>
+      </div>
+      <div class="crit-panel" id="crit-b1">
+        <h3>Criterion B1: Conducting musical research</h3>
+        <div class="crit-marks">9 marks</div>
+        <p class="focus">Judges how well you extract, locate, and explain musical and extra musical findings, and whether your terminology is accurate.</p>
+        <p class="guiding">Ask yourself: am I explaining my findings, or just listing them? Can someone find exactly what I'm pointing to in the score or recording?</p>
+        <div class="spectrum cols-3">
+          <div class="spec-step"><div class="range">1 to 3</div><div class="verb">Lists</div><p>Findings are superficial; terminology and location are inaccurate.</p></div>
+          <div class="spec-step"><div class="range">4 to 6</div><div class="verb">Describes</div><p>Reasonable findings; terminology and location are inconsistent.</p></div>
+          <div class="spec-step"><div class="range">7 to 9</div><div class="verb">Explains</div><p>Purposeful findings; accurate terminology and precise location throughout.</p></div>
+        </div>
+      </div>
+      <div class="crit-panel" id="crit-b2">
+        <h3>Criterion B2: Implications</h3>
+        <div class="crit-marks">3 marks</div>
+        <p class="focus">Judges whether you understand what your research actually means for your creating and performing, not just that you did research, but that it shaped what you made.</p>
+        <p class="guiding">Ask yourself: could I point to a specific decision in my exercise and trace it back to something I found?</p>
+        <div class="spectrum cols-3">
+          <div class="spec-step"><div class="range">1</div><div class="verb">Outlines</div><p>States the implications without much depth.</p></div>
+          <div class="spec-step"><div class="range">2</div><div class="verb">Describes</div><p>Reasonable account of the implications.</p></div>
+          <div class="spec-step"><div class="range">3</div><div class="verb">Explains</div><p>Clear, convincing account of how research shaped the work.</p></div>
+        </div>
+      </div>
+      <div class="crit-panel" id="crit-c1">
+        <h3>Criterion C1: Understanding creating conventions</h3>
+        <div class="crit-marks">3 marks</div>
+        <p class="focus">Judges how well your creating exercise actually realizes the stylistic, technical, and musical demands of the style you explored.</p>
+        <p class="guiding">Ask yourself: does my exercise sound and look like it belongs to this style, or just gesture toward it?</p>
+        <div class="spectrum cols-3">
+          <div class="spec-step"><div class="range">1</div><div class="verb">Approximates</div><p>A rough gesture toward the style's conventions.</p></div>
+          <div class="spec-step"><div class="range">2</div><div class="verb">Exhibits</div><p>Shows the conventions, with some inconsistency.</p></div>
+          <div class="spec-step"><div class="range">3</div><div class="verb">Realizes</div><p>Genuinely realizes the style's creating conventions.</p></div>
+        </div>
+      </div>
+      <div class="crit-panel" id="crit-c2">
+        <h3>Criterion C2: Understanding performing practices</h3>
+        <div class="crit-marks">3 marks</div>
+        <p class="focus">Judges how well your performed adaptation captures the performing practices of the style you explored, on your own instrument or voice.</p>
+        <p class="guiding">Ask yourself: would someone familiar with this style recognise its performing conventions in my adaptation?</p>
+        <div class="spectrum cols-3">
+          <div class="spec-step"><div class="range">1</div><div class="verb">Approximates</div><p>A rough attempt at the style's performing practices.</p></div>
+          <div class="spec-step"><div class="range">2</div><div class="verb">Transmits</div><p>Carries the performing practices across, somewhat unevenly.</p></div>
+          <div class="spec-step"><div class="range">3</div><div class="verb">Shapes</div><p>Genuinely shapes the performance around the style's practices.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="page-section" id="page-checklist">
+  <div class="divider">
+    <div class="line"></div>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e8926b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    <div class="line"></div>
+  </div>
+  <h2 class="section-title" id="sec-checklist">Before you submit</h2>
+  <p class="lede">Distilled from the assessment guidance: the habits that separate a strong submission from a rushed one.</p>
+  <div class="checklist">
+    <img loading="lazy" decoding="async" class="checklist-img" src="images/emc-22.webp" alt="A hand ticking off boxes on a printed checklist">
+    <ul>
+      <li>Keep your evidence balanced: equal treatment across the areas of inquiry and contexts you choose, not three examples from one and a token nod to another.</li>
+      <li>Choose your creating exercise and performed adaptation from two different areas of inquiry.</li>
+      <li>Locate every finding precisely: bars/beats/instruments for scores, minutes and seconds for audio.</li>
+      <li>Keep exercises as your own, unassisted work: reworking teacher fed material after feedback isn't submittable.</li>
+      <li>If you used any loops in your creating exercise or performed adaptation, make sure every one is self-invented: your own recording, performance, improvisation, or your own MIDI entry. No pre-existing or commercial loops in their original form.</li>
+      <li>When adapting for your own instrument, consider choosing music written for a different instrument or voice: it's often easier to demonstrate real understanding that way.</li>
+      <li>Check your three uploads are packaged in the exact required order before you submit.</li>
+    </ul>
+  </div>
+  </div>
+  <footer>
+    Paraphrased from the IB Music guide (first assessment 2022), Exploring Music in Context component; criterion titles reproduced exactly. For full official criterion wording used in marking, refer to your school's copy of the guide.
+  </footer>
+</div>
+</body>
+</html>
