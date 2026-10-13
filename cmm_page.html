@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Contemporary Music Maker: DP Music</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{
+  --bg:#0d1f14;
+  --panel:#14291c;
+  --panel-2:#1a3322;
+  --edge:#35573f;
+  --text:#f4faf3;
+  --text-soft:#c3dcc9;
+  --gold:#4ade80;
+  --gold-light:#8ef0b0;
+  --gold-deep:#123420;
+  --amber:#2f7a4f;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;background:var(--bg);}
+body{
+  background:
+    radial-gradient(circle at 12% 8%, rgba(74,222,128,0.28), transparent 46%),
+    radial-gradient(circle at 90% 15%, rgba(142,240,176,0.18), transparent 42%),
+    radial-gradient(circle at 82% 95%, rgba(47,122,79,0.24), transparent 46%),
+    radial-gradient(circle at 8% 85%, rgba(74,222,128,0.20), transparent 42%),
+    linear-gradient(165deg, #14291c 0%, #1a3322 40%, #12241a 70%, #0c1610 100%);
+  color:var(--text);
+  font-family:'Nunito',sans-serif;
+  font-weight:400;
+  line-height:1.76;
+  letter-spacing:.012em;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+  overflow-x:hidden;
+}
+.serif{font-family:'Playfair Display',serif;}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+/* WATERMARK LAYER */
+.world-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.world-bg svg{width:100%;height:100%;opacity:.05;}
+.wrap{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:0 20px 110px;}
+/* HERO */
+.hero{
+  position:relative;overflow:hidden;
+  padding:70px 20px 60px;margin-bottom:10px;
+  display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center;
+}
+@media (max-width:760px){.hero{grid-template-columns:1fr;padding-top:44px;text-align:center;}
+  .hero-globe{order:-1;margin:0 auto;}}
+.hero-text{position:relative;z-index:2;}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-light);margin-bottom:14px;}
+.hero h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(36px,5.4vw,58px);color:#fff;line-height:1.04;letter-spacing:-.01em;}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--gold-light),#e6fff0,var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{margin-top:16px;color:var(--text-soft);font-size:16.5px;max-width:48ch;}
+.hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;}
+@media (max-width:760px){.hero-tags{justify-content:center;}}
+.hero-tag{
+  background:rgba(74,222,128,0.18);border:1px solid rgba(142,240,176,0.4);border-radius:999px;
+  padding:7px 15px;font-size:12.5px;font-weight:700;color:var(--gold-light);
+}
+.hero-globe{position:relative;z-index:1;}
+.hero-globe svg{width:100%;height:auto;display:block;filter:drop-shadow(0 20px 60px rgba(74,222,128,0.3));}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.note-float-1{animation:bob 4.2s ease-in-out infinite;}
+.note-float-2{animation:bob 5.1s ease-in-out infinite .6s;}
+.note-float-3{animation:bob 3.6s ease-in-out infinite 1.1s;}
+/* SECTION HEADERS */
+h2.section-title{
+  font-family:'Playfair Display',serif;font-size:28px;font-weight:700;
+  margin:70px 0 8px;letter-spacing:-.005em;color:#fff;
+  display:flex;align-items:center;gap:12px;
+}
+
+.lede{color:var(--text-soft);max-width:66ch;margin:0 0 28px;font-size:15.5px;line-height:1.75;}
+/* ORIENTATION CARD */
+.orient{
+  position:relative;background:linear-gradient(160deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--edge);border-radius:24px;padding:36px 38px;margin-top:20px;
+  box-shadow:0 30px 70px rgba(0,0,0,.35);
+}
+.orient-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;margin-bottom:22px;}
+@media (max-width:640px){.orient-grid{grid-template-columns:1fr;}}
+.orient-box{background:rgba(8,17,11,0.6);border:1px solid var(--edge);border-radius:18px;padding:18px 20px;}
+.orient-box b.label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:12px;}
+.orient-box ul{list-style:none;display:flex;flex-direction:column;gap:9px;font-size:14px;}
+.orient-box li{position:relative;}
+
+.orient-box p{font-size:14px;color:var(--text-soft);margin-bottom:7px;}
+.orient-box p:last-child{margin-bottom:0;}
+.orient-box p b{color:var(--text);font-weight:700;}
+.jump-label{font-size:12px;color:var(--text-soft);margin-bottom:10px;}
+.jump-links{display:flex;flex-wrap:wrap;gap:9px;}
+.jump-links label{
+  font-family:'Nunito',sans-serif;text-decoration:none;display:inline-block;
+  font-size:12.5px;font-weight:700;color:var(--text);
+  background:rgba(8,17,11,0.6);border:2px solid var(--edge);border-radius:999px;padding:10px 18px;
+  cursor:pointer;transition:border-color .15s ease, transform .15s ease, background .15s ease;
+  user-select:none;
+}
+.jump-links label:hover{border-color:var(--gold-light);transform:translateY(-1px);}
+/* PAGE NAVIGATION — radio-driven, zero JS */
+.page-radio{display:none;}
+.page-section{display:none;}
+#jump-what:checked ~ #page-what,
+#jump-stages:checked ~ #page-stages,
+#jump-plan:checked ~ #page-plan,
+#jump-submit:checked ~ #page-submit,
+#jump-criteria:checked ~ #page-criteria,
+#jump-checklist:checked ~ #page-checklist{display:block;}
+#jump-what:checked ~ .orient .jump-links label[for="jump-what"],
+#jump-stages:checked ~ .orient .jump-links label[for="jump-stages"],
+#jump-plan:checked ~ .orient .jump-links label[for="jump-plan"],
+#jump-submit:checked ~ .orient .jump-links label[for="jump-submit"],
+#jump-criteria:checked ~ .orient .jump-links label[for="jump-criteria"],
+#jump-checklist:checked ~ .orient .jump-links label[for="jump-checklist"]{
+  border-color:var(--gold-light);background:var(--gold-deep);
+}
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:14px;margin:56px 0 -30px;opacity:.5;}
+.divider .line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--edge),transparent);}
+.divider svg{flex-shrink:0;opacity:.6;}
+/* KEY TERMS */
+.terms-box{
+  background:linear-gradient(160deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--edge);border-left:4px solid var(--amber);border-radius:20px;
+  padding:22px 26px;margin:28px 0;
+}
+.terms-box h3{font-family:'Playfair Display',serif;font-size:24px;color:#fff;margin-bottom:14px;}
+.term-row{display:flex;gap:20px;padding:15px 0;border-bottom:1px solid var(--edge);align-items:baseline;flex-wrap:wrap;}
+.term-row:last-child{border-bottom:none;padding-bottom:0;}
+.term-row .term{font-family:'Playfair Display',serif;font-weight:700;font-size:16px;color:var(--gold-light);min-width:220px;}
+.term-row .note{font-size:15px;color:var(--text-soft);}
+/* TECH SPOTLIGHT */
+.tech-spotlight{
+  position:relative;overflow:hidden;
+  background:linear-gradient(150deg,var(--gold-deep) 0%,var(--panel-2) 60%);
+  border:1.5px solid var(--gold);border-radius:24px;padding:32px 34px;margin:28px 0;
+}
+.tech-spotlight::before{
+  content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(74,222,128,0.35),transparent 70%);
+}
+.tech-spotlight .spot-tag svg{flex-shrink:0;}
+.tech-spotlight .spot-tag{
+  position:relative;display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--bg);
+  background:var(--gold);padding:5px 14px;border-radius:999px;margin-bottom:14px;
+}
+.tech-spotlight h3{position:relative;font-family:'Playfair Display',serif;font-size:24px;color:#fff;margin-bottom:10px;}
+.tech-spotlight p{position:relative;font-size:14.5px;color:var(--text);margin-bottom:10px;max-width:70ch;}
+.tech-spotlight ul{position:relative;padding-left:22px;font-size:14.5px;color:var(--text-soft);line-height:1.65;list-style:none;}
+.tech-spotlight li{margin-bottom:10px;}
+/* STAGES — radio-driven tabs, zero JS */
+.role-tabswrap > input[type="radio"]{display:none;}
+.role-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.role-tab{
+  display:flex;align-items:center;gap:9px;cursor:pointer;
+  border:1.5px solid var(--edge);background:var(--panel);color:var(--text);
+  padding:11px 18px;border-radius:18px;font-weight:700;font-size:14px;
+  transition:all .25s cubic-bezier(.34,1.4,.64,1);user-select:none;transform-origin:center;
+}
+.role-tab svg{width:18px;height:18px;flex-shrink:0;stroke:var(--text-soft);}
+#role-researcher:checked ~ .role-tabs label[for="role-researcher"],
+#role-creator:checked ~ .role-tabs label[for="role-creator"],
+#role-performer:checked ~ .role-tabs label[for="role-performer"]{
+  border-color:var(--gold-light);background:linear-gradient(135deg,var(--gold-deep),var(--panel-2));
+  box-shadow:0 0 0 1px var(--gold-light) inset, 0 8px 24px rgba(74,222,128,0.22);
+  transform:scale(1.06);
+}
+#role-researcher:checked ~ .role-tabs label[for="role-researcher"] svg,
+#role-creator:checked ~ .role-tabs label[for="role-creator"] svg,
+#role-performer:checked ~ .role-tabs label[for="role-performer"] svg{stroke:var(--gold-light);}
+.role-panel{
+  display:none;background:linear-gradient(160deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--edge);border-radius:24px;padding:36px 38px;box-shadow:0 30px 70px rgba(0,0,0,.3);
+}
+#role-researcher:checked ~ .role-panels #panel-researcher{display:block;}
+#role-creator:checked ~ .role-panels #panel-creator{display:block;}
+#role-performer:checked ~ .role-panels #panel-performer{display:block;}
+.role-panel h3{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:12px;color:#fff;}
+.role-panel > p{font-size:16px;line-height:1.75;color:var(--text);margin-bottom:22px;max-width:68ch;}
+.role-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media (max-width:620px){.role-cols{grid-template-columns:1fr;}}
+.role-box{background:rgba(8,17,11,0.55);border-radius:15px;padding:22px 24px;border:1px solid var(--edge);}
+.role-box b.label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;}
+.role-box ul{padding-left:20px;font-size:14px;color:var(--text-soft);line-height:1.65;list-style:none;}
+.role-box li{margin-bottom:10px;}
+/* PLANNING & COLLABORATION — checkbox-driven reveal cards, zero JS */
+h3.subsection-title{
+  font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff;
+  display:flex;align-items:center;gap:10px;margin:0 0 6px;
+}
+h3.subsection-title .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.sub-lede{font-size:13.5px;color:var(--text-soft);margin:0 0 18px;max-width:60ch;}
+.material-group{margin-bottom:40px;}
+.material-group:last-of-type{margin-bottom:0;}
+.inquiry-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+@media (max-width:760px){.inquiry-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:460px){.inquiry-grid{grid-template-columns:1fr;}}
+.inquiry-card{height:290px;cursor:pointer;position:relative;}
+.inquiry-card input[type="checkbox"]{position:absolute;opacity:0;pointer-events:none;}
+.inquiry-card label.flip-inner{
+  position:relative;display:block;width:100%;height:100%;cursor:pointer;
+  transition:transform .32s cubic-bezier(.34,1.4,.64,1);transform-origin:center;
+}
+.inquiry-card input:checked ~ label.flip-inner{transform:scale(1.08);z-index:6;}
+.inquiry-card .face{
+  position:absolute;inset:0;border-radius:20px;
+  padding:20px 18px;overflow:hidden;border:1.5px solid var(--accent, var(--edge));
+  transition:opacity .32s ease, transform .32s ease;
+}
+.inquiry-card .face.front{
+  background:linear-gradient(160deg, var(--panel) 0%, var(--panel-2) 100%);
+  box-shadow:0 0 0 1px rgba(255,255,255,0.03) inset, 0 14px 34px rgba(0,0,0,.35);
+  opacity:1;transform:scale(1);z-index:2;
+}
+.inquiry-card .face.front::before{
+  content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;
+  background:radial-gradient(circle, var(--accent), transparent 70%); opacity:.35;
+}
+.inquiry-card .face.back{
+  background:linear-gradient(160deg, var(--accent-deep, var(--panel-2)) 0%, var(--panel) 100%);
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;transform:scale(.96);z-index:1;pointer-events:none;
+}
+.inquiry-card input:checked ~ label.flip-inner .face.front{opacity:0;transform:scale(1.04);pointer-events:none;z-index:1;}
+.inquiry-card input:checked ~ label.flip-inner .face.back{opacity:1;transform:scale(1);pointer-events:auto;z-index:2;}
+.inquiry-card .num{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--accent);position:relative;}
+.inquiry-card h4{font-size:15px;margin:9px 0 9px;line-height:1.35;color:#fff;position:relative;}
+.inquiry-card .face.front p{font-size:12.5px;color:var(--text-soft);position:relative;}
+.inquiry-card .face.back p{font-size:12.5px;color:var(--text);line-height:1.55;}
+.inquiry-card .tap-hint{
+  position:absolute;bottom:14px;left:18px;right:18px;font-size:10.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent);font-weight:800;
+}
+.inquiry-card .back-label{
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:8px;
+}
+.context-row{display:flex;gap:14px;flex-wrap:wrap;}
+.context-pill{height:210px;cursor:pointer;flex:1;min-width:220px;position:relative;}
+.context-pill input[type="checkbox"]{position:absolute;opacity:0;pointer-events:none;}
+.context-pill label.flip-inner{
+  position:relative;display:block;width:100%;height:100%;cursor:pointer;
+  transition:transform .32s cubic-bezier(.34,1.4,.64,1);transform-origin:center;
+}
+.context-pill input:checked ~ label.flip-inner{transform:scale(1.06);z-index:6;}
+.context-pill .face{
+  position:absolute;inset:0;border-radius:20px;padding:18px 20px;
+  border:1.5px solid var(--accent, var(--edge));
+  transition:opacity .32s ease, transform .32s ease;
+}
+.context-pill .face.front{
+  background:var(--panel-2);display:flex;flex-direction:column;justify-content:center;
+  opacity:1;transform:scale(1);z-index:2;
+}
+.context-pill .face.back{
+  background:linear-gradient(160deg, var(--accent-deep, var(--panel-2)) 0%, var(--panel) 100%);
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;transform:scale(.96);z-index:1;pointer-events:none;
+}
+.context-pill input:checked ~ label.flip-inner .face.front{opacity:0;transform:scale(1.04);pointer-events:none;z-index:1;}
+.context-pill input:checked ~ label.flip-inner .face.back{opacity:1;transform:scale(1);pointer-events:auto;z-index:2;}
+.context-pill b{display:block;color:#fff;font-size:16px;margin-bottom:6px;font-family:'Playfair Display',serif;}
+.context-pill .face.front p{font-size:13px;color:var(--text-soft);}
+.context-pill .face.back p{font-size:12.5px;color:var(--text);line-height:1.55;}
+.context-pill .tap-hint{
+  font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-top:10px;
+}
+.context-pill .back-label{
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:8px;
+}
+.ewm-note{
+  margin-top:18px;background:rgba(142,240,176,0.08);border:1px solid rgba(142,240,176,0.32);
+  border-radius:18px;padding:16px 20px;font-size:13.5px;color:var(--text);
+}
+.ewm-note b{color:var(--gold-light);}
+/* UPLOADS */
+.upload-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+@media (max-width:900px){.upload-grid{grid-template-columns:1fr;}}
+.upload-grid.two-col{grid-template-columns:1fr 1fr;max-width:760px;margin:0 auto;}
+@media (max-width:700px){.upload-grid.two-col{grid-template-columns:1fr;}}
+.upload-card{
+  position:relative;background:linear-gradient(160deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--edge);border-radius:24px;padding:26px 24px;overflow:hidden;
+}
+.upload-card::after{
+  content:'';position:absolute;bottom:-40px;left:-40px;width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(74,222,128,0.25),transparent 70%);
+}
+.upload-card .up-tag{
+  position:relative;display:inline-block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--gold);color:#04170c;padding:5px 14px;border-radius:999px;margin-bottom:14px;
+}
+.upload-card.docs .up-tag{background:var(--gold-light);color:#0c2a18;}
+.upload-card h4{font-family:'Playfair Display',serif;font-size:21px;margin-bottom:4px;color:#fff;position:relative;}
+.upload-card .limit{font-size:13px;color:var(--gold-light);font-weight:700;margin-bottom:16px;position:relative;}
+.pkg-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:8px;position:relative;}
+.pkg-list li{
+  display:flex;align-items:flex-start;gap:12px;font-size:13.5px;color:var(--text-soft);line-height:1.55;
+  background:rgba(8,17,11,0.55);border-radius:13px;padding:12px 14px;
+}
+.pkg-list .n{
+  flex-shrink:0;width:20px;height:20px;border-radius:50%;background:var(--panel-2);
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--text);
+}
+.pkg-list li span.main{color:#fff;font-weight:600;}
+.not-counted{font-size:11.5px;color:var(--text-soft);margin-top:12px;font-style:italic;position:relative;}
+/* CRITERIA */
+.crit-tabswrap > input[type="radio"]{display:none;}
+.crit-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.crit-tab{
+  cursor:pointer;border:1.5px solid var(--edge);background:var(--panel);color:var(--text);
+  padding:11px 18px;border-radius:18px;font-weight:800;font-size:14px;display:flex;align-items:center;gap:9px;
+  transition:all .25s cubic-bezier(.34,1.4,.64,1);user-select:none;transform-origin:center;
+}
+.crit-tab .pill{background:var(--panel-2);border-radius:999px;padding:3px 9px;font-size:11px;color:var(--text-soft);}
+#crit-tab-a:checked ~ .crit-tabs label[for="crit-tab-a"],
+#crit-tab-b:checked ~ .crit-tabs label[for="crit-tab-b"],
+#crit-tab-c:checked ~ .crit-tabs label[for="crit-tab-c"],
+#crit-tab-d:checked ~ .crit-tabs label[for="crit-tab-d"]{
+  border-color:var(--gold-light);background:linear-gradient(135deg,var(--gold-deep),var(--panel-2));
+  box-shadow:0 0 0 1px var(--gold-light) inset;
+  transform:scale(1.06);
+}
+.crit-panel{
+  display:none;background:linear-gradient(160deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--edge);border-radius:24px;padding:36px 38px;box-shadow:0 30px 70px rgba(0,0,0,.3);
+}
+#crit-tab-a:checked ~ .crit-panels #crit-a{display:block;}
+#crit-tab-b:checked ~ .crit-panels #crit-b{display:block;}
+#crit-tab-c:checked ~ .crit-panels #crit-c{display:block;}
+#crit-tab-d:checked ~ .crit-panels #crit-d{display:block;}
+.crit-panel h3{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:6px;color:#fff;}
+.crit-marks{font-size:13px;color:var(--gold-light);font-weight:700;margin-bottom:16px;}
+.crit-panel p.focus{font-size:15px;line-height:1.7;color:var(--text);margin-bottom:20px;max-width:68ch;}
+.crit-panel .guiding{
+  font-size:13px;color:var(--text-soft);background:rgba(8,17,11,0.55);border-left:3px solid var(--gold-light);
+  padding:12px 16px;border-radius:11px;margin-bottom:20px;font-style:italic;
+}
+.spectrum{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.spectrum.cols-3{grid-template-columns:repeat(3,1fr);}
+@media (max-width:680px){.spectrum{grid-template-columns:1fr 1fr;}}
+.spec-step{
+  background:rgba(8,17,11,0.55);border-radius:15px;padding:17px 18px;border-top:3px solid var(--edge);
+  transition:transform .15s ease;
+}
+.spec-step:hover{transform:translateY(-3px);}
+.spec-step .range{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--text-soft);margin-bottom:5px;}
+.spec-step .verb{font-family:'Playfair Display',serif;font-weight:700;font-size:16px;margin-bottom:7px;}
+.spec-step p{font-size:12px;color:var(--text-soft);}
+.spec-step:nth-child(1){border-top-color:#8a5a3f;}
+.spec-step:nth-child(2){border-top-color:#c98a4a;}
+.spec-step:nth-child(3){border-top-color:var(--gold);}
+.spec-step:nth-child(4){border-top-color:var(--gold-light);}
+.spec-step:nth-child(1) .verb{color:#e0ab8f;}
+.spec-step:nth-child(2) .verb{color:#f0c98b;}
+.spec-step:nth-child(3) .verb{color:var(--gold);}
+.spec-step:nth-child(4) .verb{color:var(--gold-light);}
+/* CHECKLIST */
+.checklist{
+  background:linear-gradient(160deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--edge);border-radius:24px;padding:32px 34px;
+}
+.checklist ul{list-style:none;display:flex;flex-direction:column;gap:14px;}
+.checklist li{
+  font-size:15px;line-height:1.6;background:rgba(8,17,11,0.5);
+  border-radius:15px;padding:16px 18px;
+}
+
+footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--edge);font-size:12px;color:var(--text-soft);}
+footer a{color:var(--gold-light);}
+/* HERO PHOTO ICON */
+.icon-badge{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  object-fit:cover;border:2px solid var(--gold-light);
+  box-shadow:0 0 0 3px rgba(74,222,128,0.18), 0 4px 14px rgba(0,0,0,.4);
+  vertical-align:middle;margin-right:10px;
+}
+.kicker-row{display:flex;align-items:center;gap:0;margin-bottom:14px;}
+@media (max-width:760px){.kicker-row{justify-content:center;}}
+.kicker-row .kicker{margin-bottom:0;}
+.hero-photo-frame{
+  position:relative;border-radius:29px;padding:10px;
+  background:linear-gradient(160deg, rgba(74,222,128,0.35), rgba(47,122,79,0.25));
+  box-shadow:0 20px 60px rgba(74,222,128,0.22);
+}
+.hero-photo-frame::before{
+  content:'';position:absolute;inset:-18px;z-index:-1;border-radius:37px;
+  background:radial-gradient(circle at 50% 45%, rgba(142,240,176,0.35), transparent 70%);
+}
+.hero-photo{
+  width:100%;height:auto;display:block;border-radius:20px;
+  filter:drop-shadow(0 14px 30px rgba(0,0,0,.45));
+}
+.float-note{
+  position:absolute;font-family:'Segoe UI Symbol','Noto Sans Symbols','Apple Symbols',sans-serif;
+  color:var(--gold-light);text-shadow:0 4px 14px rgba(0,0,0,.5);pointer-events:none;
+}
+.note-float-1{top:-16px;left:-14px;font-size:34px;}
+.note-float-2{top:30%;right:-18px;font-size:30px;}
+.note-float-3{bottom:-14px;left:20%;font-size:26px;}
+/* PHOTO-FACE SHARED (inquiry + context cards) */
+.photo-face{padding:0 !important;overflow:hidden;position:relative;display:block !important;}
+.photo-face .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.photo-face .num-badge{
+  position:absolute;top:12px;left:12px;z-index:2;width:28px;height:28px;border-radius:50%;
+  background:rgba(6,14,9,0.72);border:1px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-weight:900;font-size:13px;color:var(--accent);
+}
+.photo-face .photo-overlay{
+  position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:16px 16px 14px;
+  background:linear-gradient(180deg, rgba(6,14,9,0.05) 0%, rgba(6,14,9,0.22) 45%, rgba(4,10,7,0.95) 100%);
+}
+.photo-face h4, .photo-face b.pf-title{color:#fff;font-family:'Playfair Display',serif;position:relative;}
+.photo-face b.pf-title{font-size:19px;}
+.photo-face .photo-overlay p{position:relative;font-size:11.5px;color:var(--text-soft);margin-top:4px;}
+.photo-face .tap-hint{position:relative;left:auto;right:auto;bottom:auto;margin-top:8px;}
+/* SPOTLIGHT GRID */
+.spotlight-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:28px 0;}
+@media (max-width:700px){.spotlight-grid{grid-template-columns:1fr;}}
+.spotlight-grid .tech-spotlight{margin:0;}
+.tech-spotlight.loops{background:linear-gradient(150deg, #12301f 0%, var(--panel-2) 60%);border-color:var(--amber);}
+.tech-spotlight.loops .spot-tag{background:var(--amber);color:#fff;}
+.spot-banner{width:100%;border-radius:16px;overflow:hidden;margin:14px 0 18px;border:1px solid var(--edge);box-shadow:0 14px 30px rgba(0,0,0,.4);}
+.spot-banner img{width:100%;height:auto;display:block;}
+.spot-banner .cap{background:rgba(6,14,9,0.88);padding:9px 14px;font-size:11px;color:var(--text-soft);font-style:italic;line-height:1.5;}
+.upload-banner{width:100%;border-radius:14px;overflow:hidden;margin:0 0 16px;border:1px solid var(--edge);box-shadow:0 12px 26px rgba(0,0,0,.4);position:relative;}
+.upload-banner img{width:100%;height:auto;display:block;}
+/* ROLE PANEL MEDIA (researcher photo) */
+.role-panel-media{display:grid;grid-template-columns:1fr 220px;gap:24px;align-items:start;}
+@media (max-width:680px){.role-panel-media{grid-template-columns:1fr;}}
+.role-photo-card{position:sticky;top:20px;}
+@media (max-width:680px){.role-photo-card{position:static;width:220px;max-width:100%;margin:0 auto;}}
+.role-photo-card img{width:100%;display:block;border-radius:18px;border:1px solid var(--edge);box-shadow:0 14px 34px rgba(0,0,0,.4);}
+.role-photo-card .cap{font-size:11.5px;color:var(--text-soft);margin-top:9px;font-style:italic;line-height:1.5;}
+/* CONTEXT ROW SIZING for photo cards */
+.context-pill{height:210px;}
+</style>
+</head>
+<body>
+<div class="world-bg">
+  <svg viewBox="0 0 1000 1400" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="white" fill="none" stroke-width="1.5">
+      <circle cx="150" cy="200" r="90"/><ellipse cx="150" cy="200" rx="90" ry="30"/><ellipse cx="150" cy="200" rx="30" ry="90"/>
+      <circle cx="850" cy="500" r="120"/><ellipse cx="850" cy="500" rx="120" ry="40"/><ellipse cx="850" cy="500" rx="40" ry="120"/>
+      <circle cx="200" cy="900" r="100"/><ellipse cx="200" cy="900" rx="100" ry="33"/><ellipse cx="200" cy="900" rx="33" ry="100"/>
+      <circle cx="800" cy="1200" r="80"/><ellipse cx="800" cy="1200" rx="80" ry="26"/><ellipse cx="800" cy="1200" rx="26" ry="80"/>
+    </g>
+  </svg>
+</div>
+<div class="wrap">
+  <input type="radio" name="pagejump" id="jump-what" class="page-radio" checked>
+  <input type="radio" name="pagejump" id="jump-stages" class="page-radio">
+  <input type="radio" name="pagejump" id="jump-plan" class="page-radio">
+  <input type="radio" name="pagejump" id="jump-submit" class="page-radio">
+  <input type="radio" name="pagejump" id="jump-criteria" class="page-radio">
+  <input type="radio" name="pagejump" id="jump-checklist" class="page-radio">
+  <div class="hero">
+    <div class="hero-text">
+      <div class="kicker-row"><img src="images/cmm-01.webp" alt="Vocalist recording in a studio, wearing headphones at a condenser microphone" class="icon-badge"><div class="kicker">DP Music, HL only, Internal Assessment</div></div>
+      <h1>The Contemporary <em>Music Maker</em></h1>
+      <p class="hero-sub">A collaborative project inspired by real life music making, bringing the researcher, the creator, and the performer together in one process, with a leadership role that's entirely yours.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">HL only</span>
+        <span class="hero-tag">30% of HL grade</span>
+        <span class="hero-tag">Internal assessment</span>
+        <span class="hero-tag">32 marks total</span>
+      </div>
+    </div>
+    <div class="hero-globe">
+      <div class="hero-photo-frame">
+        <img fetchpriority="high" src="images/cmm-02.webp" alt="Vocalist recording in a studio, wearing headphones at a condenser microphone" class="hero-photo">
+        <span class="float-note note-float-1">&#9835;</span>
+        <span class="float-note note-float-2">&#9834;</span>
+        <span class="float-note note-float-3">&#9833;</span>
+      </div>
+    </div>
+  </div>
+  <div class="orient">
+    <div class="orient-grid">
+      <div class="orient-box">
+        <b class="label">By the end of this page you can</b>
+        <ul>
+          <li>Explain why this project is collaborative by design, and what a "leadership role" actually means</li>
+          <li>Describe the three stages (researcher, creator/performer, and curation) and what each produces</li>
+          <li>Know exactly what goes in each of the two uploads, and how the 15 minute video is packaged</li>
+          <li>Self assess draft work against criteria A, B, C, and D</li>
+        </ul>
+      </div>
+      <div class="orient-box">
+        <b class="label">Where this fits</b>
+        <p><b>Runs alongside:</b> Exploring Music in Context, Experimenting with Music &amp; Presenting Music</p>
+        <p><b>Weight:</b> 30% of the HL final grade: HL only, not assessed at SL</p>
+        <p><b>Assessed:</b> Internally, by your own teacher, then authenticated</p>
+      </div>
+    </div>
+    <p class="jump-label">Jump to:</p>
+    <div class="jump-links">
+      <label for="jump-what">1. What it is</label>
+      <label for="jump-stages">2. The three stages</label>
+      <label for="jump-plan">3. Planning &amp; collaboration</label>
+      <label for="jump-submit">4. What you submit</label>
+      <label for="jump-criteria">5. How it's marked</label>
+      <label for="jump-checklist">6. Before you submit</label>
+    </div>
+  </div>
+  <div class="page-section" id="page-what">
+  <div class="divider">
+    <div class="line"></div>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#4ade80"><path d="M12 2l2.1 7.9L22 12l-7.9 2.1L12 22l-2.1-7.9L2 12l7.9-2.1z"/></svg>
+    <div class="line"></div>
+  </div>
+  <h2 class="section-title" id="sec-what">What is the contemporary music maker?</h2>
+  <p class="lede">
+    This component culminates in a collaborative project inspired by real life practices in contemporary music making. It brings together the roles and skills of researcher, creator and performer, and the processes of exploration, experimentation and presentation, through a real life music making situation in a contemporary setting.
+  </p>
+  <p class="lede">
+    You'll investigate the opportunities, limitations and demands of being a musician in the 21st century. Projects may be studio projects, or inspired by the music industry or a global context: the guide's own examples include exploring unfamiliar performance venues, considering virtual spaces for music making, or collaborating with peers such as dancers, film makers or sound engineers.
+  </p>
+  <p class="lede">
+    Collaboration is compulsory: you must work with at least one other student, each guided by your own artistic intentions and taking a distinct area of responsibility that you lead. Engagement should begin early, ideally with research into potential projects starting from the outset of the course.
+  </p>
+  <div class="terms-box">
+    <h3>Key terms to know</h3>
+    <div class="term-row"><span class="term">PROJECT PLAN</span><span class="note">your vision, rationale, timeline and resources, submitted for teacher approval, and revised as work progresses.</span></div>
+    <div class="term-row"><span class="term">LEADERSHIP ROLE</span><span class="note">a clearly identified, meaningful aspect of the project that is yours to own, direct and be assessed on.</span></div>
+    <div class="term-row"><span class="term">PROCESS EVIDENCE</span><span class="note">continuously narrated, representative excerpts of work in progress, not just the finished product.</span></div>
+    <div class="term-row"><span class="term">REAL LIFE PRACTICE</span><span class="note">modelled on or inspired by genuine contemporary music making; it doesn't need to be executed in an actual real life context.</span></div>
+    <div class="term-row"><span class="term">AUTHENTICATION</span><span class="note">your teacher's confirmation the submitted work is genuinely yours, using the 6/MCAF form.</span></div>
+  </div>
+  <div class="spotlight-grid">
+    <div class="tech-spotlight">
+      <span class="spot-tag"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><circle cx="4" cy="12" r="2"/><line x1="12" y1="21" x2="12" y2="16"/><line x1="12" y1="12" x2="12" y2="3"/><circle cx="12" cy="14" r="2"/><line x1="20" y1="21" x2="20" y2="8"/><line x1="20" y1="4" x2="20" y2="3"/><circle cx="20" cy="6" r="2"/></svg> Spotlight</span>
+      <h3>Studio, industry, or global context</h3>
+      <div class="spot-banner">
+        <img loading="lazy" decoding="async" src="images/cmm-03.webp" alt="A signpost with arrows pointing to different languages and their countries' flags, against a blue sky">
+        <p class="cap">A studio project, an industry inspired one, or something built around a genuine global context: all three are valid starting points.</p>
+      </div>
+      <p>The teacher's role here is mentor, not director, advising on feasibility and giving feedback on your project plan, but never dictating or prescribing your choice of project.</p>
+      <ul>
+        <li>Projects don't need to be transferred to, or executed in, a genuine real life context, but must be modelled on or inspired by real life practice, and you must explain how in your project plan.</li>
+        <li>Students, not teachers or visiting artists, must be the decision makers in planning and developing their own projects.</li>
+        <li>Two HL students may work on the same project together, as long as each is guided by their own artistic intentions and leads a distinct area of responsibility.</li>
+      </ul>
+    </div>
+    <div class="tech-spotlight loops">
+      <span class="spot-tag"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg> Spotlight</span>
+      <h3>Process evidence: show your working</h3>
+      <div class="spot-banner">
+        <img loading="lazy" decoding="async" src="images/cmm-04.webp" alt="A laptop screen glowing in a dark room, open to a video streaming site">
+        <p class="cap">Reviewing and logging footage as you go: the narration gets built alongside the evidence, not bolted on at the end.</p>
+      </div>
+      <p>Process evidence should focus mainly on musical material and be continuously narrated, by voice over or subtitles, linking what's shown back to your stated goals, timeline, collaboration and any adjustments made along the way.</p>
+      <ul>
+        <li>Collect videos of rehearsals, audio of works in progress paired with images of scores, interviews with collaborators or feedback forms, and evidence of how you used your resources.</li>
+        <li>Attribute and acknowledge the allocation of tasks and each collaborator's contribution as you go.</li>
+        <li><b>If planning and process can't be appropriately evidenced, the final project may be treated as a case of academic misconduct.</b> Reference every source you consult.</li>
+      </ul>
+    </div>
+  </div>
+  </div>
+  <div class="page-section" id="page-stages">
+  <h2 class="section-title" id="sec-stages">The three stages</h2>
+  <p class="lede">The same three roles you've built all course (researcher, creator, performer) now inside one collaborative project. Tap a stage to see what it looks like in practice.</p>
+  <div class="role-tabswrap">
+    <input type="radio" name="roletab" id="role-researcher" checked>
+    <input type="radio" name="roletab" id="role-creator">
+    <input type="radio" name="roletab" id="role-performer">
+    <div class="role-tabs">
+      <label for="role-researcher" class="role-tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        Researcher
+      </label>
+      <label for="role-creator" class="role-tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Creator &amp; performer
+      </label>
+      <label for="role-performer" class="role-tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        Curation
+      </label>
+    </div>
+    <div class="role-panels">
+      <div class="role-panel" id="panel-researcher">
+        <h3>Stage 1: Researcher</h3>
+        <div class="role-panel-media">
+          <div>
+            <p>Planning and envisioning the project. You develop and refine clear, achievable project aims according to your musical intentions, through research and inquiry, documented in a project plan that's submitted to your teacher for approval, with regular consultation expected as it's refined.</p>
+            <div class="role-cols">
+              <div class="role-box">
+                <b class="label">Your project plan should cover</b>
+                <ul>
+                  <li><b>Brief summary</b>: your vision and musical goals</li>
+                  <li><b>Rationale</b>: real life relevance, the nature of any collaboration, and your role</li>
+                  <li><b>Timeline</b>: estimated hours, preparation, rehearsal, other prep time</li>
+                  <li><b>Resources</b>: collaborators, space, instruments, technology, a hypothetical budget</li>
+                </ul>
+              </div>
+              <div class="role-box">
+                <b class="label">Where it shows up</b>
+                <ul>
+                  <li>Upload 2: project plan, list of sources, scores</li>
+                  <li>Criterion B: discussion of the process</li>
+                  <li>Ongoing consultation and approval from your teacher</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="role-photo-card">
+            <img loading="lazy" decoding="async" src="images/cmm-05.webp" alt="Two collaborators sketching app wireframes on paper next to an open laptop">
+            <p class="cap">A well kept project plan, refined with your teacher as you go, is what makes discussing your process easy later.</p>
+          </div>
+        </div>
+      </div>
+      <div class="role-panel" id="panel-creator">
+        <h3>Stage 2: Creator &amp; performer</h3>
+        <div class="role-panel-media">
+          <div>
+            <p>Developing the project in practice. You realize your project goals specific to your identified role, use resources responsibly and imaginatively, set tasks for collaborators, monitor progress, empower contributors, and review the project plan whenever it's necessary.</p>
+            <div class="role-cols">
+              <div class="role-box">
+                <b class="label">What you're doing</b>
+                <ul>
+                  <li>Leading a clearly identified, meaningful aspect of the music making project, as evidenced in both the plan and the process itself</li>
+                  <li>Identifying areas for development and implementing improvement strategies as rehearsal and creation continue</li>
+                  <li>Collecting process evidence continuously as you go: rehearsal videos, work in progress audio with score images, collaborator interviews or feedback forms</li>
+                </ul>
+              </div>
+              <div class="role-box">
+                <b class="label">Where it shows up</b>
+                <ul>
+                  <li>Upload 1, Section 1: process evidence</li>
+                  <li>Criterion B: discussion of the process</li>
+                  <li>Criterion D: organization and presentation</li>
+                </ul>
+              </div>
+            </div>
+            <p style="font-size:12.5px;color:var(--text-soft);margin-top:14px;font-style:italic;">If you can't appropriately evidence the planning and process behind the completed project, it may be treated as a case of academic misconduct: see the process evidence spotlight in "What it is".</p>
+          </div>
+          <div class="role-photo-card">
+            <img loading="lazy" decoding="async" src="images/cmm-06.webp" alt="A rehearsal and recording room with a drum kit, microphones on stands, acoustic panels and stools">
+            <p class="cap">Where the project actually gets built: rehearsal after rehearsal, with the room set up to capture it as you go.</p>
+          </div>
+        </div>
+      </div>
+      <div class="role-panel" id="panel-performer">
+        <h3>Stage 3: Curation &amp; final presentation</h3>
+        <div class="role-panel-media">
+          <div>
+            <p>The culmination of the project: a video format final presentation, or curated excerpts of one, included in your multimedia submission. The presentation may take many forms; the priority is authenticity to the project.</p>
+            <div class="role-cols">
+              <div class="role-box">
+                <b class="label">Required elements</b>
+                <ul>
+                  <li>Demonstration that your musical goals have been achieved: musical development, and communication of intention and purpose</li>
+                  <li>Demonstration of musical communication appropriate to the project: musicality, and technical proficiency</li>
+                </ul>
+              </div>
+              <div class="role-box">
+                <b class="label">Where it shows up</b>
+                <ul>
+                  <li>Upload 1, Section 2: final product, curated to max 7 of the 15 minutes</li>
+                  <li>Criterion A: selection of evidence</li>
+                  <li>Criterion C: technical and musical proficiency in your identified role</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="role-photo-card">
+            <img loading="lazy" decoding="async" src="images/cmm-07.webp" alt="A digital audio workstation timeline showing multiple recorded and MIDI tracks for a project in progress">
+            <p class="cap">Cutting fifteen minutes of footage down to a curated seven: the same editing skill either way.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="page-section" id="page-plan">
+  <div class="divider">
+    <div class="line"></div>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18"/></svg>
+    <div class="line"></div>
+  </div>
+  <h2 class="section-title" id="sec-plan">Planning &amp; collaboration</h2>
+  <p class="lede">Two things define a strong project: a plan built around real life practice, and a collaboration where your leadership role is unmistakable.</p>
+  <div class="material-group">
+    <h3 class="subsection-title"><span class="dot" style="background:#8ef0b0"></span>Your project plan</h3>
+    <p class="sub-lede">The guide's suggested format, in four sections. Tap a card for what belongs in it.</p>
+    <div class="inquiry-grid">
+      <div class="inquiry-card" style="--accent:#8ef0b0; --accent-deep:#173d28;">
+        <input type="checkbox" id="inquiry-1">
+        <label class="flip-inner" for="inquiry-1">
+          <div class="face front">
+            <div class="num">1</div>
+            <h4>Brief summary</h4>
+            <p>Your vision, and your musical goals.</p>
+            <div class="tap-hint">Tap for more ↻</div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>State your artistic vision plainly, and name the musical goals the project is working toward: this is what everything else in the plan, and later your discussion of the process, gets checked against.</p>
+          </div>
+        </label>
+      </div>
+      <div class="inquiry-card" style="--accent:#4ade80; --accent-deep:#123420;">
+        <input type="checkbox" id="inquiry-2">
+        <label class="flip-inner" for="inquiry-2">
+          <div class="face front photo-face">
+            <img loading="lazy" decoding="async" class="photo" src="images/cmm-08.webp" alt="A student painter studying a canvas closely with a brush held to her chin">
+            <span class="num-badge">2</span>
+            <div class="photo-overlay">
+              <h4>Rationale</h4>
+              <p>Real life relevance, collaboration, and your role.</p>
+              <div class="tap-hint">Tap for more &#8635;</div>
+            </div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>Justify the project's real life relevance, describe the nature of any collaboration, and set out your role and contributions, plus any other information that supports and justifies your vision.</p>
+          </div>
+        </label>
+      </div>
+      <div class="inquiry-card" style="--accent:#2f9e63; --accent-deep:#0f2e1c;">
+        <input type="checkbox" id="inquiry-3">
+        <label class="flip-inner" for="inquiry-3">
+          <div class="face front photo-face">
+            <img loading="lazy" decoding="async" class="photo" src="images/cmm-09.webp" alt="A project timeline infographic with monthly milestones from March through August">
+            <span class="num-badge">3</span>
+            <div class="photo-overlay">
+              <h4>Timeline</h4>
+              <p>Hours, preparation, and rehearsal.</p>
+              <div class="tap-hint">Tap for more &#8635;</div>
+            </div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>A timeline of the creative process leading to the final presentation: estimated hours, preparation, rehearsal time, and other preparation time. As the plan changes, document revisions as part of your process evidence.</p>
+          </div>
+        </label>
+      </div>
+      <div class="inquiry-card" style="--accent:#6fcf97; --accent-deep:#173322;">
+        <input type="checkbox" id="inquiry-4">
+        <label class="flip-inner" for="inquiry-4">
+          <div class="face front photo-face">
+            <img loading="lazy" decoding="async" class="photo" src="images/cmm-10.webp" alt="A hypothetical project budget table listing sound system rental, lighting rig, stage rental, backline equipment, special effects and venue power upgrade costs">
+            <span class="num-badge">4</span>
+            <div class="photo-overlay">
+              <h4>Resources needed</h4>
+              <p>People, space, technology, budget.</p>
+              <div class="tap-hint">Tap for more &#8635;</div>
+            </div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>Collaborators, space, instruments, lighting, recording and studio technology, and a hypothetical budget plan. Preempt or acknowledge possible obstacles, and consider the health and safety of participants and audience.</p>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="ewm-note">
+    <b>Your plan will change: that's expected.</b> What matters is that revisions are documented as part of your process evidence, showing the review, evaluation, refinement and adjustment as it actually happens.
+  </div>
+  <div class="material-group">
+    <h3 class="subsection-title"><span class="dot" style="background:#2f9e63"></span>Who you can collaborate with</h3>
+    <p class="sub-lede">Collaboration is compulsory, and each collaborator needs their own clearly identified part. Tap a pill for what's allowed.</p>
+    <div class="context-row">
+      <div class="context-pill" style="--accent:#8ef0b0; --accent-deep:#173d28;">
+        <input type="checkbox" id="context-solo">
+        <label class="flip-inner" for="context-solo">
+          <div class="face front photo-face">
+            <img loading="lazy" decoding="async" class="photo" src="images/cmm-11.webp" alt="A bass guitarist and a collaborator reading sheet music together while rehearsing">
+            <div class="photo-overlay">
+              <b class="pf-title">Other music students</b>
+              <div class="tap-hint">Tap for more &#8635;</div>
+            </div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>IB or non IB, each bringing their own distinct, clearly identified leadership role. Two HL music students may even share one project, as long as each is guided by their own artistic intentions.</p>
+          </div>
+        </label>
+      </div>
+      <div class="context-pill" style="--accent:#4ade80; --accent-deep:#123420;">
+        <input type="checkbox" id="context-ensemble">
+        <label class="flip-inner" for="context-ensemble">
+          <div class="face front photo-face">
+            <img loading="lazy" decoding="async" class="photo" src="images/cmm-12.webp" alt="Two contemporary dancers leaping mid performance, one in a red dress">
+            <div class="photo-overlay">
+              <b class="pf-title">Other arts students</b>
+              <div class="tap-hint">Tap for more &#8635;</div>
+            </div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>IB or non IB (dancers, film makers, visual artists) contributing to a genuinely interdisciplinary project, provided their part and yours stay clearly distinguishable.</p>
+          </div>
+        </label>
+      </div>
+      <div class="context-pill" style="--accent:#2f9e63; --accent-deep:#0f2e1c;">
+        <input type="checkbox" id="context-accompaniment">
+        <label class="flip-inner" for="context-accompaniment">
+          <div class="face front photo-face">
+            <img loading="lazy" decoding="async" class="photo" src="images/cmm-13.webp" alt="Three students in lab coats and safety glasses collaborating on a chemistry experiment">
+            <div class="photo-overlay">
+              <b class="pf-title">Other subject area students</b>
+              <div class="tap-hint">Tap for more &#8635;</div>
+            </div>
+          </div>
+          <div class="face back">
+            <div class="back-label">Go deeper</div>
+            <p>Any other subject area, IB or non IB (sound engineering, technology, production support, and more) as long as the work stays entirely your own and their contribution is clearly attributed.</p>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="ewm-note">
+    <b>What's not allowed:</b> working directly with teachers, or with other professionals in or outside the school. The work must be entirely your own, and every collaborator's part, including yours, must be clearly identifiable and attributed.
+  </div>
+  </div>
+  <div class="page-section" id="page-submit">
+  <h2 class="section-title" id="sec-submit">What you submit</h2>
+  <p class="lede">Two uploads: one continuously narrated multimedia video, and one set of supporting documents.</p>
+  <div class="upload-grid two-col">
+    <div class="upload-card">
+      <div class="upload-banner">
+        <img loading="lazy" decoding="async" src="images/cmm-14.webp" alt="A student playing violin while a collaborator listens and follows notation software on a laptop">
+      </div>
+      <span class="up-tag">Upload 1</span>
+      <h4>Multimedia presentation</h4>
+      <div class="limit">Max 15 minutes, continuously narrated</div>
+      <ul class="pkg-list">
+        <li><span class="n">1</span><span><span class="main">Section 1: Process evidence</span>: work in progress excerpts, continuously narrated</span></li>
+        <li><span class="n">2</span><span><span class="main">Section 2: Final product</span> (curated, if applicable): max 7 of the 15 minutes</span></li>
+        <li><span class="n">3</span><span><span class="main">Evaluation</span> of the project's success against your stated musical goals</span></li>
+        <li><span class="n">4</span><span><span class="main">Referencing</span>: appropriate citation and a list of sources</span></li>
+      </ul>
+      <p class="not-counted">One continuously narrated video file, compiled in that exact order, accessible in a single viewing, without pausing.</p>
+    </div>
+    <div class="upload-card docs">
+      <span class="up-tag">Upload 2</span>
+      <h4>Supporting documents</h4>
+      <div class="limit">Project plan &amp; sources</div>
+      <ul class="pkg-list">
+        <li><span class="n">1</span><span><span class="main">Project plan</span>: as developed and refined with your teacher</span></li>
+        <li><span class="n">2</span><span><span class="main">List of sources</span>: written, audio, and audio visual</span></li>
+        <li><span class="n">3</span><span><span class="main">Scores</span>: only those relevant to the multimedia presentation</span></li>
+      </ul>
+      <p class="not-counted">If your project is intended for live performance and runs longer than 7 minutes, the video evidence must be curated by you: only what's shown is assessed.</p>
+    </div>
+  </div>
+  <div class="ewm-note">
+    <b>Authentication:</b> your final presentation must be authenticated by your teacher using the Music Coursework Authentication form (6/MCAF). If the planning and process behind the completed project can't be appropriately evidenced, the work may be treated as a case of academic misconduct. The same piece of work can't be submitted for both internal assessment and the Extended Essay.
+  </div>
+  </div>
+  <div class="page-section" id="page-criteria">
+  <div class="divider">
+    <div class="line"></div>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#8ef0b0"><path d="M12 2l2.1 7.9L22 12l-7.9 2.1L12 22l-2.1-7.9L2 12l7.9-2.1z"/></svg>
+    <div class="line"></div>
+  </div>
+  <h2 class="section-title" id="sec-criteria">How it's marked</h2>
+  <p class="lede">Four criteria, 32 marks total. Tap a criterion to see the mark bands.</p>
+  <div class="crit-tabswrap">
+    <input type="radio" name="crittab" id="crit-tab-a" checked>
+    <input type="radio" name="crittab" id="crit-tab-b">
+    <input type="radio" name="crittab" id="crit-tab-c">
+    <input type="radio" name="crittab" id="crit-tab-d">
+    <div class="crit-tabs">
+      <label for="crit-tab-a" class="crit-tab" title="Selection of evidence">A <span class="pill">8</span></label>
+      <label for="crit-tab-b" class="crit-tab" title="Discussion of the process">B <span class="pill">12</span></label>
+      <label for="crit-tab-c" class="crit-tab" title="Technical and musical proficiency in the identified role">C <span class="pill">8</span></label>
+      <label for="crit-tab-d" class="crit-tab" title="Organization and presentation">D <span class="pill">4</span></label>
+    </div>
+    <div class="crit-panels">
+      <div class="crit-panel" id="crit-a">
+        <h3>Criterion A: Selection of evidence</h3>
+        <div class="crit-marks">8 marks</div>
+        <p class="focus">Judges the nature of the evidence you choose to document your project: is it appropriate and well chosen?</p>
+        <p class="guiding">Ask yourself: does my evidence show the project happening, or just tell people about it?</p>
+        <div class="spectrum">
+          <div class="spec-step"><div class="range">1 to 2</div><div class="verb">Ineffective</div><p>Ineffective and/or rudimentary selection of evidence.</p></div>
+          <div class="spec-step"><div class="range">3 to 4</div><div class="verb">Suitable</div><p>Suitable but formulaic selection of evidence.</p></div>
+          <div class="spec-step"><div class="range">5 to 6</div><div class="verb">Relevant</div><p>Relevant and purposeful selection of evidence.</p></div>
+          <div class="spec-step"><div class="range">7 to 8</div><div class="verb">Resourceful</div><p>Resourceful and compelling selection of evidence.</p></div>
+        </div>
+      </div>
+      <div class="crit-panel" id="crit-b">
+        <h3>Criterion B: Discussion of the process</h3>
+        <div class="crit-marks">12 marks</div>
+        <p class="focus">Judges how you discuss challenges and successes, examine areas for development, and evaluate the musical and collaborative choices you made, in relation to your stated aims.</p>
+        <p class="guiding">Ask yourself: am I just listing what happened, or actually evaluating why it worked?</p>
+        <div class="spectrum">
+          <div class="spec-step"><div class="range">1 to 3</div><div class="verb">Outlines</div><p>Outlines challenges/successes; identifies areas for development; states the choices made.</p></div>
+          <div class="spec-step"><div class="range">4 to 6</div><div class="verb">Describes</div><p>Describes challenges/successes; distinguishes areas for development; demonstrates the choices made.</p></div>
+          <div class="spec-step"><div class="range">7 to 9</div><div class="verb">Explains</div><p>Explains challenges/successes; investigates areas for development; justifies the choices made.</p></div>
+          <div class="spec-step"><div class="range">10 to 12</div><div class="verb">Discusses</div><p>Discusses challenges/successes; examines areas for development; evaluates the choices made.</p></div>
+        </div>
+      </div>
+      <div class="crit-panel" id="crit-c">
+        <h3>Criterion C: Technical and musical proficiency in the identified role</h3>
+        <div class="crit-marks">8 marks</div>
+        <p class="focus">Judges your technical proficiency and musicianship in the specific role you led: researcher, creator, or performer.</p>
+        <p class="guiding">Ask yourself: does this sound approximated, or does it genuinely sound like mine?</p>
+        <div class="spectrum">
+          <div class="spec-step"><div class="range">1 to 2</div><div class="verb">Rudimentary</div><p>Approximates the musical aims with ineffective musicianship.</p></div>
+          <div class="spec-step"><div class="range">3 to 4</div><div class="verb">Inconsistent</div><p>Transmits the musical aims with sufficient musicianship.</p></div>
+          <div class="spec-step"><div class="range">5 to 6</div><div class="verb">Competent</div><p>Realizes the musical aims with proficient musicianship.</p></div>
+          <div class="spec-step"><div class="range">7 to 8</div><div class="verb">Excellent</div><p>Personalizes the musical aims with compelling musicianship.</p></div>
+        </div>
+      </div>
+      <div class="crit-panel" id="crit-d">
+        <h3>Criterion D: Organization and presentation</h3>
+        <div class="crit-marks">4 marks</div>
+        <p class="focus">Judges how well you organize and present your work in the multimedia presentation.</p>
+        <p class="guiding">Ask yourself: could someone follow my whole project in one viewing, without pausing?</p>
+        <div class="spectrum">
+          <div class="spec-step"><div class="range">1</div><div class="verb">Ineffective</div><p>Ineffective submission.</p></div>
+          <div class="spec-step"><div class="range">2</div><div class="verb">Inconsistent</div><p>Inconsistent submission.</p></div>
+          <div class="spec-step"><div class="range">3</div><div class="verb">Purposeful</div><p>Purposeful submission.</p></div>
+          <div class="spec-step"><div class="range">4</div><div class="verb">Resourceful</div><p>Resourceful and imaginative submission.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="page-section" id="page-checklist">
+  <div class="divider">
+    <div class="line"></div>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4fd1a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    <div class="line"></div>
+  </div>
+  <h2 class="section-title" id="sec-checklist">Before you submit</h2>
+  <p class="lede">Distilled from the assessment guidance: the habits that separate a strong submission from a rushed one.</p>
+  <div class="checklist">
+    <ul>
+      <li>Start researching potential projects from early in the course: don't wait until deadlines are close.</li>
+      <li>Make sure at least one other student is genuinely collaborating, and that your own leadership role is clearly identified from the start.</li>
+      <li>Write your project plan around the four sections (brief summary, rationale, timeline, resources) and get your teacher's approval before committing.</li>
+      <li>Collect process evidence continuously as you go: rehearsal videos, work in progress audio with score images, collaborator interviews or feedback forms.</li>
+      <li>Narrate your process evidence throughout, voice over or subtitles, so it's accessible in one viewing, without pausing.</li>
+      <li>If your plan changes, document the change as evidence of review, evaluation and adjustment: don't just quietly redo the plan.</li>
+      <li>Keep every collaborator's contribution clearly attributable: the work, and each identified role within it, must be traceable to real students.</li>
+      <li>Curate the final product down to a maximum of 7 of the 15 minutes, choosing excerpts that clearly show your artistic goals being realized in your role.</li>
+      <li>Get your final presentation authenticated by your teacher using the 6/MCAF form before submission.</li>
+    </ul>
+  </div>
+  </div>
+  <footer>
+    Built from the IB Music guide and Music teacher support material (first assessment 2022), The Contemporary Music Maker component; criterion titles and level descriptors reproduced exactly. For the full official wording used in marking, refer to your school's copy of the guide.
+  </footer>
+</div>
+</body>
+</html>
