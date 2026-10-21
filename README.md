@@ -4,7 +4,7 @@ Teaching pages for DP Music, used on my Google Site.
 
 ## Course overview
 
-- [DP Music Year Plan](https://wizzyboxx-cell.github.io/Artefacts/dp_music_year_plan.html)
+- [DP Music Year Plan](https://wizzyboxx-cell.github.io/Artefacts/year_plan_page.html)
 
 ## Components
 
